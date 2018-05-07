@@ -30,7 +30,7 @@
 
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="@{'/user/profile'}">Merhaba , <label th:text="${user.username}">User</label></a>
+                        <a href="/user/profile">Merhaba , <label th:text="${user.username}">User</label></a>
 
                     </li>
                     <li>
@@ -49,8 +49,8 @@
             <div class="container-fluid" id="LG">
                 <div class="row-fluid">
                     <div align="center">
-                        <a href="@{'/user/search'}"><button class="btn btn-primary" type="button">Arama Yap</button></a>
-                        <a href="@{'/user/profile'}"><button class="btn btn-primary" type="button">Profilim</button></a>
+                        <a href="/user/search"><button class="btn btn-primary" type="button">Arama Yap</button></a>
+                        <a href="/user/profile"><button class="btn btn-primary" type="button">Profilim</button></a>
                         <a href="@{'/?'}"><button class="btn btn-primary" type="button">Ödünç Aldıklarım</button></a>
 
                         <br/>

@@ -89,6 +89,7 @@ public class LoginController {
         else if(allMatches.get(2).equals("Admin")) {
             userToken.setAccess_id(2);
             request.getSession().setAttribute("userinfo",userToken); //ALL HAIL THE HTTPSESSION \v/
+            System.out.println(userToken.getToken());
             return "redirect:/management";
 
         }

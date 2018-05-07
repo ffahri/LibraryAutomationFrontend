@@ -33,6 +33,9 @@ public class UserController {
 
     }
 
+
+
+
     @RequestMapping("/user/profile")
     private String userProfile(HttpServletRequest request, Model model)
     {
@@ -43,7 +46,7 @@ public class UserController {
             //List<Ticket> ticketList = apiService.userGetOwnTickets(UserInfo.getToken().getAccess_token(),UserInfo.getUsername());
 
             // model.addAttribute("tickets",ticketList);
-            return "user/profile";
+            return "management/profile";
         }
         return "redirect:/index";
 

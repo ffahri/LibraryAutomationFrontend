@@ -26,6 +26,37 @@ public class AdminController {
 
     }
 
+    @RequestMapping("/management/profile")
+    private String adminProfile(HttpServletRequest request, Model model)
+    {
+        UserToken UserInfo = (UserToken)request.getSession().getAttribute("userinfo");
+        if(UserInfo != null && UserInfo.getAccess().equals("Admin")) {
+            //System.out.println(UserInfo.getToken().getAccess_token()); this way faster than debugging
+            model.addAttribute("user",UserInfo);
+            //List<Ticket> ticketList = apiService.userGetOwnTickets(UserInfo.getToken().getAccess_token(),UserInfo.getUsername());
+
+            // model.addAttribute("tickets",ticketList);
+            return "management/profile";
+        }
+        return "redirect:/index";
+
+    }
+
+    @RequestMapping("/management/search")
+    private String adminSearch(HttpServletRequest request, Model model)
+    {
+        UserToken UserInfo = (UserToken)request.getSession().getAttribute("userinfo");
+        if(UserInfo != null && UserInfo.getAccess().equals("Admin")) {
+            //System.out.println(UserInfo.getToken().getAccess_token()); this way faster than debugging
+            model.addAttribute("user",UserInfo);
+            //List<Ticket> ticketList = apiService.userGetOwnTickets(UserInfo.getToken().getAccess_token(),UserInfo.getUsername());
+
+            // model.addAttribute("tickets",ticketList);
+            return "management/search";
+        }
+        return "redirect:/index";
+
+    }
 
     @RequestMapping("/management/author")
     private String authorDash(HttpServletRequest request, Model model)

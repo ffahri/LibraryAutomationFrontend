@@ -30,7 +30,7 @@
 
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="@{'/user'}">Merhaba , <label th:text="${user.username}">User</label></a>
+                        <a href="@{'/management/profile'}">Merhaba , <label th:text="${user.username}">User</label></a>
 
                     </li>
                     <li>
@@ -41,5 +41,18 @@
 
         </nav>
     </div>
-</div></body>
+</div>
+
+<div align="center">
+    <a href="@{'/management/search'}"><button class="btn btn-primary" type="button">Arama Yap</button></a>
+    <a href="@{'/management/profile'}"><button class="btn btn-primary" type="button">Profilim</button></a>
+    <a href="@{'/management/itemtype'}"><button class="btn btn-primary" type="button">Türler</button></a>
+    <a href="@{'/management/author'}"><button class="btn btn-primary" type="button">Yazarlar</button></a>
+    <a href="@{'/management/publisher'}"><button class="btn btn-primary" type="button">Yayıncılar</button></a>
+    <a href="@{'/management/item'}"><button class="btn btn-primary" type="button">Yayınlar</button></a>
+
+
+    <br/>
+</div>
+</body>
 </html>

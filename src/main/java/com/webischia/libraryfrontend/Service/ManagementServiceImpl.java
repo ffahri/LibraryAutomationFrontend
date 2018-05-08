@@ -1,9 +1,6 @@
 package com.webischia.libraryfrontend.Service;
 
-import com.webischia.libraryfrontend.Model.Author;
-import com.webischia.libraryfrontend.Model.Items;
-import com.webischia.libraryfrontend.Model.ListAuthor;
-import com.webischia.libraryfrontend.Model.ListItems;
+import com.webischia.libraryfrontend.Model.*;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -85,5 +82,85 @@ public class ManagementServiceImpl implements ManagementService{
 
         Author[] authors = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET,entity,Author[].class).getBody();
         return authors;
+    }
+
+    @Override
+    public void addSubject(Subject subject, String token) {
+
+    }
+
+    @Override
+    public void deleteSubject(int id, String token) {
+
+    }
+
+    @Override
+    public Subject showSubject(int id, String token) {
+        return null;
+    }
+
+    @Override
+    public Subject[] getAllSubjects(String token) {
+        return new Subject[0];
+    }
+
+    @Override
+    public void addItemType(ItemType itemType, String token) {
+
+    }
+
+    @Override
+    public void deleteItemType(int id, String token) {
+
+    }
+
+    @Override
+    public ItemType showItemType(int id, String token) {
+        return null;
+    }
+
+    @Override
+    public ItemType[] getAllTypes(String token) {
+        return new ItemType[0];
+    }
+
+    @Override
+    public void addItem(Items items, String token) {
+
+    }
+
+    @Override
+    public void deleteItem(int id, String token) {
+
+    }
+
+    @Override
+    public Items showItem(int id, String token) {
+        return null;
+    }
+
+    @Override
+    public Items[] getAllItems(String token) {
+        return new Items[0];
+    }
+
+    @Override
+    public void addPublisher(Publisher publisher, String token) {
+
+    }
+
+    @Override
+    public void deletePublisher(int id, String token) {
+
+    }
+
+    @Override
+    public Publisher showPublisher(int id, String token) {
+        return null;
+    }
+
+    @Override
+    public Publisher[] getAllPublisher(String token) {
+        return new Publisher[0];
     }
 }

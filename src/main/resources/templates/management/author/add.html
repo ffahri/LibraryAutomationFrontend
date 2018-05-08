@@ -41,5 +41,32 @@
 
         </nav>
     </div>
-</div></body>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            Panel title
+        </h3>
+    </div>
+    <form th:object="${newauthor}" th:action="@{/management/author/add/new}" method="post">
+    <div class="panel-body">
+
+        <label class="control-label">Yazar Adı</label>
+        <input class="form-control" type="text" th:field="${newauthor.authorName}"/>
+
+        <label class="control-label">Yazar Soyadı</label>
+        <input class="form-control" type="text" th:field="${newauthor.authorLastName}" />
+
+
+
+    </div>
+    <div class="panel-footer">
+        <button class="btn btn-success" name="action" type="submit" value="add">Ekle</button>
+        <button class="btn btn-danger" name="action" type="submit" value="cancel">İptal</button>
+
+    </div>
+        </form>
+</div>
+</body>
 </html>

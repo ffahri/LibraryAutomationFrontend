@@ -11,7 +11,7 @@
             integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
             crossorigin="anonymous" th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
     <meta charset="UTF-8"/>
-    <title>Kütüphane Otomasyonu - Yazar Göster</title>
+    <title>Kütüphane Otomasyonu - Yazar Görüntüle</title>
 </head>
 <body>
 
@@ -23,7 +23,7 @@
 
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                     <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
-                </button> <a class="navbar-brand" href="#">Kütüphane Otomasyonu - Yazar Göster</a>
+                </button> <a class="navbar-brand" href="#">Kütüphane Otomasyonu - Yazar Ekle</a>
             </div>
 
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -41,5 +41,32 @@
 
         </nav>
     </div>
-</div></body>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            Panel title
+        </h3>
+    </div>
+    <form th:object="${author}" th:action="@{/management/author/add/new}" method="post">
+        <div class="panel-body">
+
+            <label class="control-label">Yazar Adı</label>
+            <input class="form-control" type="text" th:field="${author.authorName}"/>
+
+            <label class="control-label">Yazar Soyadı</label>
+            <input class="form-control" type="text" th:field="${author.authorLastName}" />
+
+
+
+        </div>
+        <div class="panel-footer">
+            <button class="btn btn-success" name="action" type="submit" value="add">Ekle</button>
+            <button class="btn btn-danger" name="action" type="submit" value="cancel">İptal</button>
+
+        </div>
+    </form>
+</div>
+</body>
 </html>

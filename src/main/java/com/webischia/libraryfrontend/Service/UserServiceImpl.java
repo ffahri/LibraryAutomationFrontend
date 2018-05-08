@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
 
     public List<Items> getItems(String token) {
 
-        String url="http://localhost:8080/api/v1/tickets";
+        String url="http://localhost:8090/api/v1/management/item/get/all";
         UriComponentsBuilder uriBuilder = UriComponentsBuilder
                 .fromUriString(url);
 

@@ -41,5 +41,44 @@
 
         </nav>
     </div>
-</div></body>
+</div>
+<a href="/management/author/add"><button class="btn btn-primary" type="button">Yazar Ekle</button></a>
+<table class="table table-striped table-hover table-condensed">
+    <thead>
+    <tr>
+        <th>
+            #ID
+        </th>
+        <th>
+            ADI
+        </th>
+        <th>
+            SOYADI
+        </th>
+        <th>
+            İŞLEM
+        </th>
+
+    </tr>
+    </thead>
+    <tbody>
+    <tr id="success" th:each="author: ${authors}">
+        <td th:text="${author.authorID}">
+            1
+        </td>
+        <td th:text="${author.authorName}">
+            TB - Monthly
+        </td>
+        <td th:text="${author.authorLastName}">
+            01/04/2012
+        </td>
+        <td>
+            <a th:href="@{'/management/author/show/'+${author.authorID}}"><button class="btn btn-primary" type="button">Görüntüle</button></a>
+            <a th:href="@{'/management/author/delete/'+${author.authorID}}"><button class="btn btn-danger" type="button">Sil</button></a>
+
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
 </html>

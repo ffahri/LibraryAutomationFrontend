@@ -1,6 +1,7 @@
 package com.webischia.libraryfrontend.Controller;
 
 import com.webischia.libraryfrontend.Model.Author;
+import com.webischia.libraryfrontend.Model.Subject;
 import com.webischia.libraryfrontend.Model.User;
 import com.webischia.libraryfrontend.Model.UserToken;
 import com.webischia.libraryfrontend.Service.ManagementService;
@@ -287,7 +288,7 @@ public class AdminController {
             //System.out.println(UserInfo.getToken().getAccess_token()); this way faster than debugging
             model.addAttribute("user",UserInfo);
             //List<Ticket> ticketList = apiService.userGetOwnTickets(UserInfo.getToken().getAccess_token(),UserInfo.getUsername());
-
+            model.addAttribute("subjects",managementService.getAllSubjects(UserInfo.getToken()));
             // model.addAttribute("tickets",ticketList);
             return "management/subject/index";
         }
@@ -303,7 +304,7 @@ public class AdminController {
             //System.out.println(UserInfo.getToken().getAccess_token()); this way faster than debugging
             model.addAttribute("user",UserInfo);
             //List<Ticket> ticketList = apiService.userGetOwnTickets(UserInfo.getToken().getAccess_token(),UserInfo.getUsername());
-
+            model.addAttribute("newsubject",new Subject());
             // model.addAttribute("tickets",ticketList);
             return "management/subject/add";
         }
@@ -311,19 +312,48 @@ public class AdminController {
 
     }
 
-    @RequestMapping("/management/subject/show")
-    private String subjectShow(HttpServletRequest request, Model model)
+    @RequestMapping(value="/management/subject/add/new", method= RequestMethod.POST, params="action=add")
+    private String addSubjectPost(@ModelAttribute UserToken user, HttpServletRequest request, Model model , @ModelAttribute Subject subject) {
+        UserToken UserInfo = (UserToken) request.getSession().getAttribute("userinfo");
+        if (UserInfo != null && UserInfo.getAccess().equals("Admin")) {
+            //System.out.println(UserInfo.getToken().getAccess_token()); this way faster than debugging
+            model.addAttribute("user", UserInfo);
+            managementService.addSubject(subject,UserInfo.getToken());
+            //apiService.userCreateMessage(UserInfo.getToken(),UserInfo.getUsername(),newTicketDTO.getMessageContext(),newTicketDTO.getId());
+            return "redirect:/management/subject ";
+
+        }
+        return "redirect:/index";
+    }
+
+    @RequestMapping("/management/subject/show/{id}")
+    private String subjectShow(HttpServletRequest request, Model model,@PathVariable int id)
     {
         UserToken UserInfo = (UserToken)request.getSession().getAttribute("userinfo");
         if(UserInfo != null && UserInfo.getAccess().equals("Admin")) {
             //System.out.println(UserInfo.getToken().getAccess_token()); this way faster than debugging
             model.addAttribute("user",UserInfo);
             //List<Ticket> ticketList = apiService.userGetOwnTickets(UserInfo.getToken().getAccess_token(),UserInfo.getUsername());
-
+            model.addAttribute("subject",managementService.showSubject(id,UserInfo.getToken()));
             // model.addAttribute("tickets",ticketList);
             return "management/subject/show";
         }
         return "redirect:/index";
 
     }
+
+    @RequestMapping(value="/management/subject/delete/{id}", method= RequestMethod.POST, params="action=delete")
+    private String deleteSubject(@ModelAttribute UserToken user, HttpServletRequest request, Model model , @ModelAttribute Subject subject,@PathVariable int id) {
+        UserToken UserInfo = (UserToken) request.getSession().getAttribute("userinfo");
+        if (UserInfo != null && UserInfo.getAccess().equals("Admin")) {
+            //System.out.println(UserInfo.getToken().getAccess_token()); this way faster than debugging
+            model.addAttribute("user", UserInfo);
+            managementService.deleteSubject(id,UserInfo.getToken());
+            //apiService.userCreateMessage(UserInfo.getToken(),UserInfo.getUsername(),newTicketDTO.getMessageContext(),newTicketDTO.getId());
+            return "redirect:/management/subject ";
+
+        }
+        return "redirect:/index";
+    }
+
 }

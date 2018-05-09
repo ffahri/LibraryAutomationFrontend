@@ -1,9 +1,6 @@
 package com.webischia.libraryfrontend.Controller;
 
-import com.webischia.libraryfrontend.Model.Author;
-import com.webischia.libraryfrontend.Model.Subject;
-import com.webischia.libraryfrontend.Model.User;
-import com.webischia.libraryfrontend.Model.UserToken;
+import com.webischia.libraryfrontend.Model.*;
 import com.webischia.libraryfrontend.Service.ManagementService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -216,15 +213,14 @@ public class AdminController {
 
     }
 
-    @RequestMapping("/management/itemtype/show")
-    private String itemTypeShow(HttpServletRequest request, Model model)
+    @RequestMapping("/management/itemtype/show/{id}")
+    private String itemTypeShow(HttpServletRequest request, Model model,@PathVariable int id)
     {
         UserToken UserInfo = (UserToken)request.getSession().getAttribute("userinfo");
         if(UserInfo != null && UserInfo.getAccess().equals("Admin")) {
             //System.out.println(UserInfo.getToken().getAccess_token()); this way faster than debugging
             model.addAttribute("user",UserInfo);
             //List<Ticket> ticketList = apiService.userGetOwnTickets(UserInfo.getToken().getAccess_token(),UserInfo.getUsername());
-
             // model.addAttribute("tickets",ticketList);
             return "management/itemtype/show";
         }
@@ -240,7 +236,7 @@ public class AdminController {
             //System.out.println(UserInfo.getToken().getAccess_token()); this way faster than debugging
             model.addAttribute("user",UserInfo);
             //List<Ticket> ticketList = apiService.userGetOwnTickets(UserInfo.getToken().getAccess_token(),UserInfo.getUsername());
-
+            model.addAttribute("publishers",managementService.getAllPublisher(UserInfo.getToken()));
             // model.addAttribute("tickets",ticketList);
             return "management/publisher/index";
         }
@@ -256,7 +252,7 @@ public class AdminController {
             //System.out.println(UserInfo.getToken().getAccess_token()); this way faster than debugging
             model.addAttribute("user",UserInfo);
             //List<Ticket> ticketList = apiService.userGetOwnTickets(UserInfo.getToken().getAccess_token(),UserInfo.getUsername());
-
+            model.addAttribute("newpublisher",new Publisher());
             // model.addAttribute("tickets",ticketList);
             return "management/publisher/add";
         }
@@ -264,15 +260,29 @@ public class AdminController {
 
     }
 
-    @RequestMapping("/management/publisher/show")
-    private String publisherShow(HttpServletRequest request, Model model)
+    @RequestMapping(value="/management/publisher/add/new", method= RequestMethod.POST, params="action=add")
+    private String addPublisherPost(@ModelAttribute UserToken user, HttpServletRequest request, Model model , @ModelAttribute Publisher publisher) {
+        UserToken UserInfo = (UserToken) request.getSession().getAttribute("userinfo");
+        if (UserInfo != null && UserInfo.getAccess().equals("Admin")) {
+            //System.out.println(UserInfo.getToken().getAccess_token()); this way faster than debugging
+            model.addAttribute("user", UserInfo);
+            managementService.addPublisher(publisher,UserInfo.getToken());
+            //apiService.userCreateMessage(UserInfo.getToken(),UserInfo.getUsername(),newTicketDTO.getMessageContext(),newTicketDTO.getId());
+            return "redirect:/management/publisher ";
+
+        }
+        return "redirect:/index";
+    }
+
+    @RequestMapping("/management/publisher/show/{id}")
+    private String publisherShow(HttpServletRequest request, Model model,@PathVariable int id)
     {
         UserToken UserInfo = (UserToken)request.getSession().getAttribute("userinfo");
         if(UserInfo != null && UserInfo.getAccess().equals("Admin")) {
             //System.out.println(UserInfo.getToken().getAccess_token()); this way faster than debugging
             model.addAttribute("user",UserInfo);
-            //List<Ticket> ticketList = apiService.userGetOwnTickets(UserInfo.getToken().getAccess_token(),UserInfo.getUsername());
-
+            //List<Ticket> ticketList = apiService.userGetOwnTickets(UserInfo.getToken().getAccess_token(),UserInfo.getUsername())
+            model.addAttribute("publisher",managementService.showPublisher(id,UserInfo.getToken()));
             // model.addAttribute("tickets",ticketList);
             return "management/publisher/show";
         }

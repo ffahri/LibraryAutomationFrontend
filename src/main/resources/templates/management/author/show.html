@@ -49,7 +49,7 @@
             Panel title
         </h3>
     </div>
-    <form th:object="${author}" th:action="@{/management/author/add/new}" method="post">
+    <form th:object="${author}" th:action="@{/management/author/edit/}" method="post">
         <div class="panel-body">
 
             <label class="control-label">Yazar Adı</label>
@@ -62,7 +62,7 @@
 
         </div>
         <div class="panel-footer">
-            <button class="btn btn-success" name="action" type="submit" value="add">Ekle</button>
+            <button class="btn btn-success" name="action" type="submit" value="edit">Ekle</button>
             <button class="btn btn-danger" name="action" type="submit" value="cancel">İptal</button>
 
         </div>

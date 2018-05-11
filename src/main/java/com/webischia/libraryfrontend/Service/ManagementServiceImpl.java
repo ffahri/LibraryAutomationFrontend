@@ -44,6 +44,21 @@ public class ManagementServiceImpl implements ManagementService{
     @Override
     public void deleteAuthor(int id, String token) {
 
+        String url="http://localhost:8090/api/v1/management/author/delete/"+id;
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder
+                .fromUriString(url);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer "+token);
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity entity = new HttpEntity(headers);
+/*
+        ListTickets liste = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET,entity,ListTickets.class).getBody();
+*/
+        //System.out.println(restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET,entity,Author[].class).getBody());
+
+        restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET,entity,String.class).getBody();
+
     }
 
     @Override
@@ -265,5 +280,71 @@ public class ManagementServiceImpl implements ManagementService{
 
         Publisher[] publishers = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET,entity,Publisher[].class).getBody();
         return publishers;
+    }
+
+
+    @Override
+    public void updateAuthor(Author author, String token) {
+        String url="http://localhost:8090/api/v1/management/author/edit/"+author.getAuthorID();
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder
+                .fromUriString(url);
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer "+token);
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        Map<String, Object> postMap = new HashMap<>();
+        postMap.put("authorName",author.getAuthorName());
+        postMap.put("authorLastName",author.getAuthorLastName());
+        HttpEntity<Map<String, Object>> request = new HttpEntity<Map<String, Object>>(postMap, headers);
+        restTemplate.postForObject(uriBuilder.toUriString(), request, Publisher.class);
+    }
+
+    @Override
+    public void updateSubject(Subject subject, String token) {
+
+        String url="http://localhost:8090/api/v1/management/subject/edit/"+subject.getSubjectID();
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder
+                .fromUriString(url);
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer "+token);
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        Map<String, Object> postMap = new HashMap<>();
+        postMap.put("subjectName",subject.getSubjectName());
+        HttpEntity<Map<String, Object>> request = new HttpEntity<Map<String, Object>>(postMap, headers);
+        restTemplate.postForObject(uriBuilder.toUriString(), request, Subject.class);
+
+    }
+
+    @Override
+    public void updateItemType(ItemType itemType, String token) {
+
+        String url="http://localhost:8090/api/v1/management/itemtype/edit/"+itemType.getTypeID();
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder
+                .fromUriString(url);
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer "+token);
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        Map<String, Object> postMap = new HashMap<>();
+        postMap.put("typeName",itemType.getTypeName());
+        HttpEntity<Map<String, Object>> request = new HttpEntity<Map<String, Object>>(postMap, headers);
+        restTemplate.postForObject(uriBuilder.toUriString(), request, ItemType.class);
+    }
+
+    @Override
+    public void updateItem(Items items, String token) {
+
+    }
+
+    @Override
+    public void updatePublisher(Publisher publisher,String token) {
+        String url="http://localhost:8090/api/v1/management/publisher/edit/"+publisher.getPublisherID();
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder
+                .fromUriString(url);
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer "+token);
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        Map<String, Object> postMap = new HashMap<>();
+        postMap.put("publisherName",publisher.getPublisherName());
+        HttpEntity<Map<String, Object>> request = new HttpEntity<Map<String, Object>>(postMap, headers);
+        restTemplate.postForObject(uriBuilder.toUriString(), request, Publisher.class);
     }
 }

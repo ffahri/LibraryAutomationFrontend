@@ -12,46 +12,59 @@
             integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
             crossorigin="anonymous" th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
     <meta charset="UTF-8">
-    <title>Register</title>
+    <title>Kayıt Formu</title>
 </head>
 <body>
 
-<div class="container-fixed">
-    <div class="row">
-        <div class="col-md-2 col-md-offset-5">
-            <form id="form" th:object="${user}" th:action="@{/register/try}" method="post">
-                <div class="control-group">
-                    <label class="control-label" for="inputEmail">İsim</label>
-                    <div class="controls">
-                        <input id="" type="text"  th:field="${user.surname}"/>
-                    </div>
-                </div>
-                <div class="control-group">
-                    <label class="control-label" for="inputEmail">E-Mail</label>
-                    <div class="controls">
-                        <input id="inputEmail" type="text"  th:field="${user.email}"/>
-                    </div>
-                </div>
-                <div class="control-group">
-                    <label class="control-label" for="inputEmail">Username</label>
-                    <div class="controls">
-                        <input id="inputEmail" type="text"  th:field="${user.name}"/>
-                    </div>
-                </div>
-                <div class="control-group">
-                    <label class="control-label" for="inputPassword">Password</label>
-                    <div class="controls">
-                        <input id="inputPassword" type="password"  th:field="${user.password}"/>
-                    </div>
-                </div>
-                <div class="control-group">
-                    <div class="controls">
-                        <br/>
-                        <button type="submit" class="btnform">Giriş Yap</button>
-                    </div>
-                </div>
-            </form>
+<div class="col-md-12">
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                Kayıt Formu
+            </h3>
         </div>
+        <form th:object="${user}" th:action="@{/register/new/}" method="post">
+
+        <div class="panel-body">
+
+            <label class="control-label">İsim</label>
+            <input class="form-control" type="text" th:field="${user.firstName}"/>
+
+            <label class="control-label">Soyisim</label>
+            <input class="form-control" type="text" th:field="${user.lastName}" />
+
+            <label class="control-label">Mail</label>
+            <input class="form-control" type="text"  th:field="${user.mail}"/>
+
+            <label class="control-label">Telefon</label>
+            <input class="form-control" type="text" th:field="${user.phone}"/>
+
+            <label class="control-label">Şifre</label>
+            <input class="form-control" type="password" th:field="${user.userPassword}"/>
+
+            <label class="control-label">Adres Satırı 1</label>
+            <input class="form-control" type="text" th:field="${address.addressLine1}" />
+
+            <label class="control-label">Adres Satırı 2</label>
+            <input class="form-control" type="text" th:field="${address.addressLine2}" />
+
+            <label class="control-label">Şehir</label>
+
+            <select class="form-control" th:field="${address.cityID}">
+                <option  th:each="city: ${cities}" th:value="${city.cityID}" th:text="${city.cityName}">ŞEHİRLER</option>
+            </select>
+<!--city id ?-->
+            <br/>
+
+
+        </div>
+        <div class="panel-footer">
+            <button class="btn btn-success" type="submit">Güncelle</button>
+            <button class="btn btn-danger" type="button">İptal</button>
+
+        </div>
+        </form>
     </div>
 </div>
 </body>

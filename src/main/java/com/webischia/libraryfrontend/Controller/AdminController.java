@@ -186,12 +186,24 @@ public class AdminController {
             //System.out.println(UserInfo.getToken().getAccess_token()); this way faster than debugging
             model.addAttribute("user",UserInfo);
             //List<Ticket> ticketList = apiService.userGetOwnTickets(UserInfo.getToken().getAccess_token(),UserInfo.getUsername());
-
+            model.addAttribute("newitem",new Items());
             // model.addAttribute("tickets",ticketList);
             return "management/item/add";
         }
         return "redirect:/index";
+    }
+    @RequestMapping(value="/management/item/add/new", method= RequestMethod.POST, params="action=add")
+    private String addItemPost(@ModelAttribute UserToken user, HttpServletRequest request, Model model , @ModelAttribute Items item) {
+        UserToken UserInfo = (UserToken) request.getSession().getAttribute("userinfo");
+        if (UserInfo != null && UserInfo.getAccess().equals("Admin")) {
+            //System.out.println(UserInfo.getToken().getAccess_token()); this way faster than debugging
+            model.addAttribute("user", UserInfo);
+            managementService.addItem(item,UserInfo.getToken());
+            //apiService.userCreateMessage(UserInfo.getToken(),UserInfo.getUsername(),newTicketDTO.getMessageContext(),newTicketDTO.getId());
+            return "redirect:/management/author ";
 
+        }
+        return "redirect:/index";
     }
 
     @RequestMapping("/management/item/show")
@@ -248,7 +260,7 @@ public class AdminController {
             //System.out.println(UserInfo.getToken().getAccess_token()); this way faster than debugging
             model.addAttribute("user",UserInfo);
             //List<Ticket> ticketList = apiService.userGetOwnTickets(UserInfo.getToken().getAccess_token(),UserInfo.getUsername());
-
+            model.addAttribute("types",managementService.getAllTypes(UserInfo.getToken()));
             // model.addAttribute("tickets",ticketList);
             return "management/itemtype/index";
         }
@@ -264,12 +276,26 @@ public class AdminController {
             //System.out.println(UserInfo.getToken().getAccess_token()); this way faster than debugging
             model.addAttribute("user",UserInfo);
             //List<Ticket> ticketList = apiService.userGetOwnTickets(UserInfo.getToken().getAccess_token(),UserInfo.getUsername());
-
+            model.addAttribute("newtype",new ItemType());
             // model.addAttribute("tickets",ticketList);
             return "management/itemtype/add";
         }
         return "redirect:/index";
 
+    }
+
+    @RequestMapping(value="/management/itemtype/add/new", method= RequestMethod.POST, params="action=add")
+    private String addItemType(@ModelAttribute UserToken user, HttpServletRequest request, Model model , @ModelAttribute ItemType itemType) {
+        UserToken UserInfo = (UserToken) request.getSession().getAttribute("userinfo");
+        if (UserInfo != null && UserInfo.getAccess().equals("Admin")) {
+            //System.out.println(UserInfo.getToken().getAccess_token()); this way faster than debugging
+            model.addAttribute("user", UserInfo);
+            managementService.addItemType(itemType,UserInfo.getToken());
+            //apiService.userCreateMessage(UserInfo.getToken(),UserInfo.getUsername(),newTicketDTO.getMessageContext(),newTicketDTO.getId());
+            return "redirect:/management/itemtype ";
+
+        }
+        return "redirect:/index";
     }
 
     @RequestMapping("/management/itemtype/show/{id}")
@@ -279,6 +305,7 @@ public class AdminController {
         if(UserInfo != null && UserInfo.getAccess().equals("Admin")) {
             //System.out.println(UserInfo.getToken().getAccess_token()); this way faster than debugging
             model.addAttribute("user",UserInfo);
+            model.addAttribute("itemtype",managementService.showItemType(id,UserInfo.getToken()));
             //List<Ticket> ticketList = apiService.userGetOwnTickets(UserInfo.getToken().getAccess_token(),UserInfo.getUsername());
             // model.addAttribute("tickets",ticketList);
             return "management/itemtype/show";

@@ -23,14 +23,14 @@
 
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                     <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
-                </button> <a class="navbar-brand" href="#">Kütüphane Otomasyonu - Yayın Ekle</a>
+                </button> <a class="navbar-brand" href="/management">Kütüphane Otomasyonu - Yayın Ekle</a>
             </div>
 
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="@{'/user'}">Merhaba , <label th:text="${user.username}">User</label></a>
+                        <a href="@{'/management/profile'}">Merhaba , <label th:text="${user.username}">User</label></a>
 
                     </li>
                     <li>
@@ -41,5 +41,59 @@
 
         </nav>
     </div>
-</div></body>
+</div>
+<div class="col-md-12">
+
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+
+            </h3>
+        </div>
+        <form th:object="${newitem}" th:action="@{/management/item/add/new}" method="post">
+            <div class="panel-body">
+
+                <label class="control-label">Yayın Türü</label>
+                <br/>
+                <!--COMBOBOX value -> item.typeID-->
+
+                <label class="control-label">Yayın Adı</label>
+                <input class="form-control" type="text" th:field="${newitem.itemName}" required/>
+
+                <label class="control-label">Yayın Açıklaması</label>
+                <input class="form-control" type="text" th:field="${newitem.itemDesc}" required/>
+
+                <label class="control-label">ISBN/STOK NO</label>
+                <input class="form-control" type="text" th:field="${newitem.ISBN}" required/>
+
+                <label class="control-label">Sayfa No/Süre</label>
+                <input class="form-control" type="text" th:field="${newitem.pageNumber}" required/>
+
+                <label class="control-label">Boyut</label>
+                <input class="form-control" type="text" th:field="${newitem.sizeValue}" required/>
+
+                <label class="control-label">Baskı</label>
+                <input class="form-control" type="text" th:field="${newitem.editionNo}" required/>
+
+                <label class="control-label">Baskı Yılı</label>
+                <input class="form-control" type="text" th:field="${newitem.printYear}" required/>
+
+                <label class="control-label">Dili</label>
+                <br/>
+                <!--COMBOBOX-->
+
+
+            </div>
+            <div class="panel-footer">
+                <button class="btn btn-success" name="action" type="submit" value="add">Ekle</button>
+                <a href="/management/item">
+                    <button class="btn btn-danger" name="action" type="button" value="cancel">İptal</button>
+                </a>
+
+            </div>
+        </form>
+    </div>
+</div>
+</body>
 </html>

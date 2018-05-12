@@ -19,6 +19,8 @@
 <div class="container-fixed">
     <div class="row">
         <div class="col-md-2 col-md-offset-5">
+            <div class="panel-body">
+
             <form id="form" th:object="${user}" th:action="@{/login/try}" method="post">
                 <div class="control-group">
                     <label class="control-label" for="inputEmail">Username</label>
@@ -35,10 +37,11 @@
                 <div class="control-group">
                     <div class="controls">
                         <br/>
-                       <button type="submit" class="btnform">Giriş Yap</button>
+                       <button type="submit" class="btn btn-success">Giriş Yap</button>
                     </div>
                 </div>
             </form>
+            </div>
         </div>
     </div>
 </div>

@@ -23,14 +23,14 @@
 
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                     <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
-                </button> <a class="navbar-brand" href="#">Kütüphane Otomasyonu - Yayın Göster</a>
+                </button> <a class="navbar-brand" href="/management">Kütüphane Otomasyonu - Yayın Göster</a>
             </div>
 
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="@{'/user'}">Merhaba , <label th:text="${user.username}">User</label></a>
+                        <a href="@{'/management/profile'}">Merhaba , <label th:text="${user.username}">User</label></a>
 
                     </li>
                     <li>

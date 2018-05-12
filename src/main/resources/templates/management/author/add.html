@@ -23,14 +23,14 @@
 
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                     <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
-                </button> <a class="navbar-brand" href="#">Kütüphane Otomasyonu - Yazar Ekle</a>
+                </button> <a class="navbar-brand" href="/management/author">Kütüphane Otomasyonu - Yazar Ekle</a>
             </div>
 
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="@{'/user'}">Merhaba , <label th:text="${user.username}">User</label></a>
+                        <a href="@{'/management/profile'}">Merhaba , <label th:text="${user.username}">User</label></a>
 
                     </li>
                     <li>
@@ -42,6 +42,7 @@
         </nav>
     </div>
 </div>
+<div class="col-md-12">
 
 <div class="panel panel-default">
     <div class="panel-heading">
@@ -53,20 +54,25 @@
     <div class="panel-body">
 
         <label class="control-label">Yazar Adı</label>
-        <input class="form-control" type="text" th:field="${newauthor.authorName}"/>
+        <input class="form-control" type="text" th:field="${newauthor.authorName}"required/>
 
         <label class="control-label">Yazar Soyadı</label>
-        <input class="form-control" type="text" th:field="${newauthor.authorLastName}" />
+        <input class="form-control" type="text" th:field="${newauthor.authorLastName}" required/>
+
+
 
 
 
     </div>
     <div class="panel-footer">
         <button class="btn btn-success" name="action" type="submit" value="add">Ekle</button>
-        <button class="btn btn-danger" name="action" type="submit" value="cancel">İptal</button>
+        <a href="/management/author">
+            <button class="btn btn-danger" name="action" type="button" value="cancel">İptal</button>
+        </a>
 
     </div>
         </form>
+</div>
 </div>
 </body>
 </html>

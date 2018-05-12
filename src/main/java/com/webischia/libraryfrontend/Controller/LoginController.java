@@ -1,22 +1,27 @@
 package com.webischia.libraryfrontend.Controller;
 
-import com.webischia.libraryfrontend.Model.User;
-import com.webischia.libraryfrontend.Model.UserToken;
+import com.webischia.libraryfrontend.Model.*;
 import com.webischia.libraryfrontend.Service.UserService;
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.xml.bind.DatatypeConverter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -41,6 +46,9 @@ public class LoginController {
     private String register(Model model)
     {
         model.addAttribute("user", new User());
+        model.addAttribute("address",new Address());
+        model.addAttribute("cities",userService.getAllCities());
+        model.addAttribute("cityid",new String());
         return "register";
     }
     @RequestMapping({"/login","/login/"})
@@ -50,16 +58,16 @@ public class LoginController {
         return "login";
     }
     @PostMapping
-    @RequestMapping("/register/try")
-    private String getRegister(@Valid @ModelAttribute User user, HttpServletRequest request , BindingResult bindingResult)
+    @RequestMapping("/register/new")
+    private String getRegister(@ModelAttribute User user, @ModelAttribute Address address, HttpServletRequest request , BindingResult bindingResult)
     {
         if(bindingResult.hasErrors())
             throw new RuntimeException("HATALI VERİ GİRİLDİ");
-        //ShoppingCart cart = (ShoppingCart)request.getSession().setAttribute("cart",value);
-        //UserToken test = (UserToken)request.getSession().setAttribute()
-        //System.out.println(user.getPassword());
-       //DÜZELT - > //apiService.register(user.getName(),user.getSurname(),user.getEmail(),user.getPassword());
-
+           //address.setCityID(city.getCityID());
+        UserAdressDTO dto = new UserAdressDTO();
+        dto.setAddress(address);
+        dto.setUser(user);
+        userService.register(dto);
         return "redirect:/index";
 
     }

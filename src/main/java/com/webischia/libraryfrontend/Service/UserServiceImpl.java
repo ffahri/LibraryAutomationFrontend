@@ -11,7 +11,9 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -64,4 +66,33 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    @Override
+    public City[] getAllCities() {
+        String url="http://localhost:8090/api/v1/register/city/get/all";
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder
+                .fromUriString(url);
+
+        HttpHeaders headers = new HttpHeaders();
+        //headers.set("Authorization", "Bearer "+token);
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity entity = new HttpEntity(headers);
+/*
+        ListTickets liste = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET,entity,ListTickets.class).getBody();
+*/
+        //System.out.println(restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET,entity,Author[].class).getBody());
+
+        return restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET,entity,City[].class).getBody();
+
+    }
+
+    @Override
+    public UserAdressDTO register(UserAdressDTO dto) {
+        String url="http://localhost:8090/api/v1/register/new";
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder
+                .fromUriString(url);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<UserAdressDTO> request= new HttpEntity<>(dto);
+        return restTemplate.postForObject(uriBuilder.toUriString(), request, UserAdressDTO.class);
+    }
 }

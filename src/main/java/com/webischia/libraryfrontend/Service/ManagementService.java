@@ -36,5 +36,9 @@ public interface ManagementService {
     Publisher showPublisher(int id,String token);
     Publisher[] getAllPublisher(String token);
 
+    Items[]searchItemKeyword(String keyword,String token);
+
+    Items[] searchbyPost(Search search,String token);
+
 
 }

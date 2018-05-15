@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"
@@ -56,11 +56,18 @@
                 <form th:object="${search}" th:action="@{/management/search/}" method="post">
 
                 <div class="panel-body">
+
+                    <label class="control-label">Yazar Adı (Opsiyonel)</label>
+                    <input class="form-control" type="text" th:field="${search.authorName}"/>
+                    <label class="control-label">Yayıncı (Opsiyonel)</label>
+                    <input class="form-control" type="text" th:field="${search.publisherName}"/>
+                    <label class="control-label">Konu Adı (Opsiyonel)</label>
+                    <input class="form-control" type="text" th:field="${search.subjectName}"/>
                     <label class="control-label">Anahtar Kelime</label>
                     <input class="form-control" type="text" th:field="${search.keyword}"/>
                 </div>
                 <div class="panel-footer">
-                    <button class="btn btn-primary" name="action" type="submit" value="add">Ara</button>
+                    <button class="btn btn-primary" name="action" type="submit" >Ara</button>
                 </div>
                 </form>
             </div>
@@ -77,9 +84,10 @@
                     <div class="span12">
                         <div class="panel-heading">
                             <h3 class="panel-title">
-                                Ödünç Aldıklarım Aktif
                             </h3>
                         </div>
+                        <div class="panel-body">
+
                         <table class="table table-striped table-hover table-condensed">
                             <thead>
                             <tr>
@@ -87,7 +95,7 @@
                                     #ID
                                 </th>
                                 <th>
-                                    Konu Adı
+Yayın Adı
                                 </th>
                                 <th>
                                     İŞLEM
@@ -96,22 +104,23 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr id="success" th:each="subject: ${subjects}">
-                                <td th:text="${subject.subjectID}">
+                            <tr id="success" th:each="item: ${items}">
+                                <td th:text="${item.itemID}">
                                     1
                                 </td>
-                                <td th:text="${subject.subjectName}">
+                                <td th:text="${item.itemName}">
                                     TB - Monthly
                                 </td>
 
                                 <td>
-                                    <a th:href="@{'/management/subject/show/'+${subject.subjectID}}"><button class="btn btn-primary" type="submit">Görüntüle</button></a>
-                                    <a th:href="@{'/management/subject/delete/'+${subject.subjectID}}"><button class="btn btn-danger" type="button">Sil</button></a>
+                                    <a th:href="@{'/management/item/show/'+${item.itemID}}"><button class="btn btn-primary" type="submit">Görüntüle</button></a>
+                                    <a th:href="@{'/management/item/delete/'+${item.itemID}}"><button class="btn btn-danger" type="button">Sil</button></a>
 
                                 </td>
                             </tr>
                             </tbody>
                         </table>
+                        </div>
                     </div>
                 </div>
             </div>

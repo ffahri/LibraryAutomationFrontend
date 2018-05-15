@@ -52,11 +52,7 @@ public class ManagementServiceImpl implements ManagementService{
         headers.set("Authorization", "Bearer "+token);
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity entity = new HttpEntity(headers);
-/*
-        ListTickets liste = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET,entity,ListTickets.class).getBody();
-*/
-        //System.out.println(restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET,entity,Author[].class).getBody());
-
+    
         restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET,entity,String.class).getBody();
 
     }
@@ -71,11 +67,7 @@ public class ManagementServiceImpl implements ManagementService{
         headers.set("Authorization", "Bearer "+token);
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity entity = new HttpEntity(headers);
-/*
-        ListTickets liste = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET,entity,ListTickets.class).getBody();
-*/
-        //System.out.println(restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET,entity,Author[].class).getBody());
-
+    
         return restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET,entity,Author.class).getBody();
 
     }
@@ -90,11 +82,7 @@ public class ManagementServiceImpl implements ManagementService{
         headers.set("Authorization", "Bearer "+token);
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity entity = new HttpEntity(headers);
-/*
-        ListTickets liste = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET,entity,ListTickets.class).getBody();
-*/
-        //System.out.println(restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET,entity,Author[].class).getBody());
-
+    
         Author[] authors = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET,entity,Author[].class).getBody();
         return authors;
     }
@@ -126,11 +114,7 @@ public class ManagementServiceImpl implements ManagementService{
         headers.set("Authorization", "Bearer "+token);
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity entity = new HttpEntity(headers);
-/*
-        ListTickets liste = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET,entity,ListTickets.class).getBody();
-*/
-        //System.out.println(restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET,entity,Author[].class).getBody());
-
+    
         restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET,entity,String.class).getBody();
     }
 
@@ -144,11 +128,7 @@ public class ManagementServiceImpl implements ManagementService{
         headers.set("Authorization", "Bearer "+token);
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity entity = new HttpEntity(headers);
-/*
-        ListTickets liste = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET,entity,ListTickets.class).getBody();
-*/
-        //System.out.println(restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET,entity,Author[].class).getBody());
-
+    
         return restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET,entity,Subject.class).getBody();    }
 
     @Override
@@ -161,11 +141,7 @@ public class ManagementServiceImpl implements ManagementService{
         headers.set("Authorization", "Bearer "+token);
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity entity = new HttpEntity(headers);
-/*
-        ListTickets liste = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET,entity,ListTickets.class).getBody();
-*/
-        //System.out.println(restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET,entity,Author[].class).getBody());
-
+    
         Subject[] subjects = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET,entity,Subject[].class).getBody();
         return subjects;
     }
@@ -208,11 +184,7 @@ public class ManagementServiceImpl implements ManagementService{
         headers.set("Authorization", "Bearer "+token);
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity entity = new HttpEntity(headers);
-/*
-        ListTickets liste = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET,entity,ListTickets.class).getBody();
-*/
-        //System.out.println(restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET,entity,Author[].class).getBody());
-
+    
         return restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET,entity,ItemType.class).getBody();
     }
 
@@ -227,34 +199,69 @@ public class ManagementServiceImpl implements ManagementService{
         headers.set("Authorization", "Bearer "+token);
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity entity = new HttpEntity(headers);
-/*
-        ListTickets liste = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET,entity,ListTickets.class).getBody();
-*/
-        //System.out.println(restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET,entity,Author[].class).getBody());
-
+    
         return restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET,entity,ItemType[].class).getBody();
 
     }
 
     @Override
     public void addItem(Items items, String token) {
+        String url="http://localhost:8090/api/v1/management/item/add";
+        System.out.println(url) ;
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder
+                .fromUriString(url);
+        HttpHeaders headers = new HttpHeaders();
+        System.out.println("TOKEN \n"+token);
+        headers.set("Authorization", "Bearer "+token);
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        //Map<Items> postMap = new HashMap<>(items);
+        //HttpEntity<Items> request = new HttpEntity<Items>(items);
+        HttpEntity<Items> request = new HttpEntity<Items>(items, headers);
+        restTemplate.postForObject(uriBuilder.toUriString(), request, Items.class);
 
     }
 
     @Override
     public void deleteItem(int id, String token) {
+        String url="http://localhost:8090/api/v1/management/item/delete/"+id;
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder
+                .fromUriString(url);
 
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer "+token);
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity entity = new HttpEntity(headers);
+
+        restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET,entity,Items.class).getBody();
     }
 
     @Override
     public Items showItem(int id, String token) {
-        return null;
+
+        String url="http://localhost:8090/api/v1/management/item/get/"+id;
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder
+                .fromUriString(url);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer "+token);
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity entity = new HttpEntity(headers);
+
+        return restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET,entity,Items.class).getBody();
     }
 
     @Override
     public Items[] getAllItems(String token) {
-        return new Items[0];
-    }
+        String url="http://localhost:8090/api/v1/management/item/get/all";
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder
+                .fromUriString(url);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer "+token);
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity entity = new HttpEntity(headers);
+  
+        return restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET,entity,Items[].class).getBody();    }
 
     @Override
     public void addPublisher(Publisher publisher, String token) {
@@ -282,11 +289,7 @@ public class ManagementServiceImpl implements ManagementService{
         headers.set("Authorization", "Bearer "+token);
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity entity = new HttpEntity(headers);
-/*
-        ListTickets liste = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET,entity,ListTickets.class).getBody();
-*/
-        //System.out.println(restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET,entity,Author[].class).getBody());
-
+   
         restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET,entity,Publisher.class).getBody();
 
     }
@@ -301,11 +304,7 @@ public class ManagementServiceImpl implements ManagementService{
         headers.set("Authorization", "Bearer "+token);
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity entity = new HttpEntity(headers);
-/*
-        ListTickets liste = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET,entity,ListTickets.class).getBody();
-*/
-        //System.out.println(restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET,entity,Author[].class).getBody());
-
+    
         return restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET,entity,Publisher.class).getBody();
     }
 
@@ -319,11 +318,7 @@ public class ManagementServiceImpl implements ManagementService{
         headers.set("Authorization", "Bearer "+token);
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity entity = new HttpEntity(headers);
-/*
-        ListTickets liste = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET,entity,ListTickets.class).getBody();
-*/
-        //System.out.println(restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET,entity,Author[].class).getBody());
-
+    
         Publisher[] publishers = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET,entity,Publisher[].class).getBody();
         return publishers;
     }
@@ -394,4 +389,33 @@ public class ManagementServiceImpl implements ManagementService{
         HttpEntity<Map<String, Object>> request = new HttpEntity<Map<String, Object>>(postMap, headers);
         restTemplate.postForObject(uriBuilder.toUriString(), request, Publisher.class);
     }
+
+    @Override
+    public Items[] searchItemKeyword(String keyword, String token) {
+        String url="http://localhost:8090/api/v1/management/item/get/search/"+keyword;
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder
+                .fromUriString(url);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer "+token);
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity entity = new HttpEntity(headers);
+
+        Items[] items = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET,entity,Items[].class).getBody();
+        return items;
+    }
+
+
+    @Override
+    public Items[] searchbyPost(Search search, String token) {
+        String url="http://localhost:8090/api/v1/management/item/search/post";
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder
+                .fromUriString(url);
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer "+token);
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        Map<String, Object> postMap = new HashMap<>();
+        HttpEntity<Search> request = new HttpEntity<>(search, headers);
+        return restTemplate.postForObject(uriBuilder.toUriString(), request, Items[].class);
+        }
 }

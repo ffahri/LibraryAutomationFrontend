@@ -25,12 +25,9 @@ public class AdminController {
     {
         UserToken UserInfo = (UserToken)request.getSession().getAttribute("userinfo");
         if(UserInfo != null && UserInfo.getAccess().equals("Admin")) {
-            //System.out.println(UserInfo.getToken().getAccess_token()); this way faster than debugging
-            model.addAttribute("user",UserInfo);
-            //List<Ticket> ticketList = apiService.userGetOwnTickets(UserInfo.getToken().getAccess_token(),UserInfo.getUsername());
+             model.addAttribute("user",UserInfo);
 
-            // model.addAttribute("tickets",ticketList);
-            return "management/index";
+             return "management/index";
         }
         return "redirect:/index";
 
@@ -41,44 +38,51 @@ public class AdminController {
     {
         UserToken UserInfo = (UserToken)request.getSession().getAttribute("userinfo");
         if(UserInfo != null && UserInfo.getAccess().equals("Admin")) {
-            //System.out.println(UserInfo.getToken().getAccess_token()); this way faster than debugging
-            model.addAttribute("user",UserInfo);
-            //List<Ticket> ticketList = apiService.userGetOwnTickets(UserInfo.getToken().getAccess_token(),UserInfo.getUsername());
-
-            // model.addAttribute("tickets",ticketList);
-            return "management/profile";
+             model.addAttribute("user",UserInfo);
+ 
+             return "management/profile";
         }
         return "redirect:/index";
 
     }
 
     @RequestMapping("/management/search")
-    private String adminSearch(HttpServletRequest request, Model model)
+    private String adminSearch(HttpServletRequest request, Model model,@ModelAttribute Search search)
     {
         UserToken UserInfo = (UserToken)request.getSession().getAttribute("userinfo");
         if(UserInfo != null && UserInfo.getAccess().equals("Admin")) {
-            //System.out.println(UserInfo.getToken().getAccess_token()); this way faster than debugging
             model.addAttribute("user",UserInfo);
-            //List<Ticket> ticketList = apiService.userGetOwnTickets(UserInfo.getToken().getAccess_token(),UserInfo.getUsername());
+            model.addAttribute("search",new Search());
+            model.addAttribute("items",managementService.searchItemKeyword(search.getKeyword(),UserInfo.getToken()));
 
-            // model.addAttribute("tickets",ticketList);
             return "management/search";
         }
         return "redirect:/index";
 
     }
+//    @RequestMapping(value="/management/search", method= RequestMethod.POST, params="action=search")
+//    private String doSearch (@ModelAttribute UserToken user, HttpServletRequest request, Model model , @ModelAttribute Search search) {
+//        UserToken UserInfo = (UserToken) request.getSession().getAttribute("userinfo");
+//        if (UserInfo != null && UserInfo.getAccess().equals("Admin")) {
+//             model.addAttribute("user", UserInfo);
+//             model.addAttribute("items",managementService.searchItemKeyword(search.getKeyword(),UserInfo.getToken()));
+//            //managementService.updateAuthor(author,UserInfo.getToken());
+//            //return "management/search ";
+//                return "search";
+//        }
+//        else {
+//            return "redirect:/index";
+//        }
+//    }
 
     @RequestMapping("/management/author")
     private String authorDash(HttpServletRequest request, Model model)
     {
         UserToken UserInfo = (UserToken)request.getSession().getAttribute("userinfo");
         if(UserInfo != null && UserInfo.getAccess().equals("Admin")) {
-            //System.out.println(UserInfo.getToken().getAccess_token()); this way faster than debugging
-            model.addAttribute("user",UserInfo);
-            //List<Ticket> ticketList = apiService.userGetOwnTickets(UserInfo.getToken().getAccess_token(),UserInfo.getUsername());
-            model.addAttribute("authors",managementService.getAllAuthors(UserInfo.getToken()));
-            // model.addAttribute("tickets",ticketList);
-            return "management/author/index";
+             model.addAttribute("user",UserInfo);
+             model.addAttribute("authors",managementService.getAllAuthors(UserInfo.getToken()));
+             return "management/author/index";
         }
         return "redirect:/index";
 
@@ -89,12 +93,9 @@ public class AdminController {
     {
         UserToken UserInfo = (UserToken)request.getSession().getAttribute("userinfo");
         if(UserInfo != null && UserInfo.getAccess().equals("Admin")) {
-            //System.out.println(UserInfo.getToken().getAccess_token()); this way faster than debugging
-            model.addAttribute("user",UserInfo);
-            //List<Ticket> ticketList = apiService.userGetOwnTickets(UserInfo.getToken().getAccess_token(),UserInfo.getUsername());
-            model.addAttribute("newauthor",new Author());
-            // model.addAttribute("tickets",ticketList);
-            return "management/author/add";
+             model.addAttribute("user",UserInfo);
+             model.addAttribute("newauthor",new Author());
+             return "management/author/add";
         }
         return "redirect:/index";
 
@@ -104,8 +105,7 @@ public class AdminController {
     private String addAuthorPost(@ModelAttribute UserToken user, HttpServletRequest request, Model model , @ModelAttribute Author author) {
         UserToken UserInfo = (UserToken) request.getSession().getAttribute("userinfo");
         if (UserInfo != null && UserInfo.getAccess().equals("Admin")) {
-            //System.out.println(UserInfo.getToken().getAccess_token()); this way faster than debugging
-            model.addAttribute("user", UserInfo);
+             model.addAttribute("user", UserInfo);
             managementService.addAuthor(author,UserInfo.getToken());
             //apiService.userCreateMessage(UserInfo.getToken(),UserInfo.getUsername(),newTicketDTO.getMessageContext(),newTicketDTO.getId());
             return "redirect:/management/author ";
@@ -120,12 +120,9 @@ public class AdminController {
     {
         UserToken UserInfo = (UserToken)request.getSession().getAttribute("userinfo");
         if(UserInfo != null && UserInfo.getAccess().equals("Admin")) {
-            //System.out.println(UserInfo.getToken().getAccess_token()); this way faster than debugging
-            model.addAttribute("user",UserInfo);
-            //List<Ticket> ticketList = apiService.userGetOwnTickets(UserInfo.getToken().getAccess_token(),UserInfo.getUsername());
-            model.addAttribute("author",managementService.showAuthor(id,UserInfo.getToken()));
-            // model.addAttribute("tickets",ticketList);
-            return "management/author/show";
+             model.addAttribute("user",UserInfo);
+             model.addAttribute("author",managementService.showAuthor(id,UserInfo.getToken()));
+             return "management/author/show";
         }
         return "redirect:/index";
 
@@ -135,12 +132,9 @@ public class AdminController {
     {
         UserToken UserInfo = (UserToken)request.getSession().getAttribute("userinfo");
         if(UserInfo != null && UserInfo.getAccess().equals("Admin")) {
-            //System.out.println(UserInfo.getToken().getAccess_token()); this way faster than debugging
-            model.addAttribute("user",UserInfo);
-            //List<Ticket> ticketList = apiService.userGetOwnTickets(UserInfo.getToken().getAccess_token(),UserInfo.getUsername());
-            managementService.deleteAuthor(id,UserInfo.getToken());
-            // model.addAttribute("tickets",ticketList);
-            return "redirect:/management/author";
+             model.addAttribute("user",UserInfo);
+             managementService.deleteAuthor(id,UserInfo.getToken());
+             return "redirect:/management/author";
         }
         return "redirect:/index";
 
@@ -150,8 +144,7 @@ public class AdminController {
     private String editAuthor(@ModelAttribute UserToken user, HttpServletRequest request, Model model , @ModelAttribute Author author) {
         UserToken UserInfo = (UserToken) request.getSession().getAttribute("userinfo");
         if (UserInfo != null && UserInfo.getAccess().equals("Admin")) {
-            //System.out.println(UserInfo.getToken().getAccess_token()); this way faster than debugging
-            model.addAttribute("user", UserInfo);
+             model.addAttribute("user", UserInfo);
             managementService.updateAuthor(author,UserInfo.getToken());
             //apiService.userCreateMessage(UserInfo.getToken(),UserInfo.getUsername(),newTicketDTO.getMessageContext(),newTicketDTO.getId());
             return "redirect:/management/author ";
@@ -167,12 +160,9 @@ public class AdminController {
     {
         UserToken UserInfo = (UserToken)request.getSession().getAttribute("userinfo");
         if(UserInfo != null && UserInfo.getAccess().equals("Admin")) {
-            //System.out.println(UserInfo.getToken().getAccess_token()); this way faster than debugging
-            model.addAttribute("user",UserInfo);
-            //List<Ticket> ticketList = apiService.userGetOwnTickets(UserInfo.getToken().getAccess_token(),UserInfo.getUsername());
-
-            // model.addAttribute("tickets",ticketList);
-            return "management/item/index";
+             model.addAttribute("user",UserInfo);
+             model.addAttribute("items",managementService.getAllItems(UserInfo.getToken()));
+             return "management/item/index";
         }
         return "redirect:/index";
 
@@ -183,12 +173,11 @@ public class AdminController {
     {
         UserToken UserInfo = (UserToken)request.getSession().getAttribute("userinfo");
         if(UserInfo != null && UserInfo.getAccess().equals("Admin")) {
-            //System.out.println(UserInfo.getToken().getAccess_token()); this way faster than debugging
-            model.addAttribute("user",UserInfo);
-            //List<Ticket> ticketList = apiService.userGetOwnTickets(UserInfo.getToken().getAccess_token(),UserInfo.getUsername());
-            model.addAttribute("newitem",new Items());
-            // model.addAttribute("tickets",ticketList);
-            return "management/item/add";
+             model.addAttribute("user",UserInfo);
+             model.addAttribute("types",managementService.getAllTypes(UserInfo.getToken()));
+             model.addAttribute("publishers",managementService.getAllPublisher(UserInfo.getToken()));
+             model.addAttribute("newitem",new Items());
+             return "management/item/add";
         }
         return "redirect:/index";
     }
@@ -196,11 +185,12 @@ public class AdminController {
     private String addItemPost(@ModelAttribute UserToken user, HttpServletRequest request, Model model , @ModelAttribute Items item) {
         UserToken UserInfo = (UserToken) request.getSession().getAttribute("userinfo");
         if (UserInfo != null && UserInfo.getAccess().equals("Admin")) {
-            //System.out.println(UserInfo.getToken().getAccess_token()); this way faster than debugging
-            model.addAttribute("user", UserInfo);
+             model.addAttribute("user", UserInfo);
+             item.setStockNo(item.getISBN());
+             System.out.println(UserInfo.getToken()+"F");
             managementService.addItem(item,UserInfo.getToken());
             //apiService.userCreateMessage(UserInfo.getToken(),UserInfo.getUsername(),newTicketDTO.getMessageContext(),newTicketDTO.getId());
-            return "redirect:/management/author ";
+            return "redirect:/management/item ";
 
         }
         return "redirect:/index";
@@ -211,12 +201,9 @@ public class AdminController {
     {
         UserToken UserInfo = (UserToken)request.getSession().getAttribute("userinfo");
         if(UserInfo != null && UserInfo.getAccess().equals("Admin")) {
-            //System.out.println(UserInfo.getToken().getAccess_token()); this way faster than debugging
-            model.addAttribute("user",UserInfo);
-            //List<Ticket> ticketList = apiService.userGetOwnTickets(UserInfo.getToken().getAccess_token(),UserInfo.getUsername());
-
-            // model.addAttribute("tickets",ticketList);
-            return "management/item/show";
+             model.addAttribute("user",UserInfo);
+ 
+             return "management/item/show";
         }
         return "redirect:/index";
 
@@ -227,12 +214,9 @@ public class AdminController {
     {
         UserToken UserInfo = (UserToken)request.getSession().getAttribute("userinfo");
         if(UserInfo != null && UserInfo.getAccess().equals("Admin")) {
-            //System.out.println(UserInfo.getToken().getAccess_token()); this way faster than debugging
-            model.addAttribute("user",UserInfo);
-            //List<Ticket> ticketList = apiService.userGetOwnTickets(UserInfo.getToken().getAccess_token(),UserInfo.getUsername());
-            managementService.deleteItem(id,UserInfo.getToken());
-            // model.addAttribute("tickets",ticketList);
-            return "redirect:/management/item";
+             model.addAttribute("user",UserInfo);
+             managementService.deleteItem(id,UserInfo.getToken());
+             return "redirect:/management/item";
         }
         return "redirect:/index";
 
@@ -242,8 +226,7 @@ public class AdminController {
     private String editItem(@ModelAttribute UserToken user, HttpServletRequest request, Model model , @ModelAttribute Items items) {
         UserToken UserInfo = (UserToken) request.getSession().getAttribute("userinfo");
         if (UserInfo != null && UserInfo.getAccess().equals("Admin")) {
-            //System.out.println(UserInfo.getToken().getAccess_token()); this way faster than debugging
-            model.addAttribute("user", UserInfo);
+             model.addAttribute("user", UserInfo);
             managementService.updateItem(items,UserInfo.getToken());
             //apiService.userCreateMessage(UserInfo.getToken(),UserInfo.getUsername(),newTicketDTO.getMessageContext(),newTicketDTO.getId());
             return "redirect:/management/item ";
@@ -257,12 +240,9 @@ public class AdminController {
     {
         UserToken UserInfo = (UserToken)request.getSession().getAttribute("userinfo");
         if(UserInfo != null && UserInfo.getAccess().equals("Admin")) {
-            //System.out.println(UserInfo.getToken().getAccess_token()); this way faster than debugging
-            model.addAttribute("user",UserInfo);
-            //List<Ticket> ticketList = apiService.userGetOwnTickets(UserInfo.getToken().getAccess_token(),UserInfo.getUsername());
-            model.addAttribute("types",managementService.getAllTypes(UserInfo.getToken()));
-            // model.addAttribute("tickets",ticketList);
-            return "management/itemtype/index";
+             model.addAttribute("user",UserInfo);
+             model.addAttribute("types",managementService.getAllTypes(UserInfo.getToken()));
+             return "management/itemtype/index";
         }
         return "redirect:/index";
 
@@ -273,12 +253,9 @@ public class AdminController {
     {
         UserToken UserInfo = (UserToken)request.getSession().getAttribute("userinfo");
         if(UserInfo != null && UserInfo.getAccess().equals("Admin")) {
-            //System.out.println(UserInfo.getToken().getAccess_token()); this way faster than debugging
-            model.addAttribute("user",UserInfo);
-            //List<Ticket> ticketList = apiService.userGetOwnTickets(UserInfo.getToken().getAccess_token(),UserInfo.getUsername());
-            model.addAttribute("newtype",new ItemType());
-            // model.addAttribute("tickets",ticketList);
-            return "management/itemtype/add";
+             model.addAttribute("user",UserInfo);
+             model.addAttribute("newtype",new ItemType());
+             return "management/itemtype/add";
         }
         return "redirect:/index";
 
@@ -288,8 +265,7 @@ public class AdminController {
     private String addItemType(@ModelAttribute UserToken user, HttpServletRequest request, Model model , @ModelAttribute ItemType itemType) {
         UserToken UserInfo = (UserToken) request.getSession().getAttribute("userinfo");
         if (UserInfo != null && UserInfo.getAccess().equals("Admin")) {
-            //System.out.println(UserInfo.getToken().getAccess_token()); this way faster than debugging
-            model.addAttribute("user", UserInfo);
+             model.addAttribute("user", UserInfo);
             managementService.addItemType(itemType,UserInfo.getToken());
             //apiService.userCreateMessage(UserInfo.getToken(),UserInfo.getUsername(),newTicketDTO.getMessageContext(),newTicketDTO.getId());
             return "redirect:/management/itemtype ";
@@ -303,12 +279,9 @@ public class AdminController {
     {
         UserToken UserInfo = (UserToken)request.getSession().getAttribute("userinfo");
         if(UserInfo != null && UserInfo.getAccess().equals("Admin")) {
-            //System.out.println(UserInfo.getToken().getAccess_token()); this way faster than debugging
-            model.addAttribute("user",UserInfo);
+             model.addAttribute("user",UserInfo);
             model.addAttribute("itemtype",managementService.showItemType(id,UserInfo.getToken()));
-            //List<Ticket> ticketList = apiService.userGetOwnTickets(UserInfo.getToken().getAccess_token(),UserInfo.getUsername());
-            // model.addAttribute("tickets",ticketList);
-            return "management/itemtype/show";
+              return "management/itemtype/show";
         }
         return "redirect:/index";
 
@@ -319,12 +292,9 @@ public class AdminController {
     {
         UserToken UserInfo = (UserToken)request.getSession().getAttribute("userinfo");
         if(UserInfo != null && UserInfo.getAccess().equals("Admin")) {
-            //System.out.println(UserInfo.getToken().getAccess_token()); this way faster than debugging
-            model.addAttribute("user",UserInfo);
-            //List<Ticket> ticketList = apiService.userGetOwnTickets(UserInfo.getToken().getAccess_token(),UserInfo.getUsername());
-            managementService.deleteItemType(id,UserInfo.getToken());
-            // model.addAttribute("tickets",ticketList);
-            return "redirect:/management/itemtype";
+             model.addAttribute("user",UserInfo);
+             managementService.deleteItemType(id,UserInfo.getToken());
+             return "redirect:/management/itemtype";
         }
         return "redirect:/index";
 
@@ -334,8 +304,7 @@ public class AdminController {
     private String editItemType(@ModelAttribute UserToken user, HttpServletRequest request, Model model , @ModelAttribute ItemType itemType) {
         UserToken UserInfo = (UserToken) request.getSession().getAttribute("userinfo");
         if (UserInfo != null && UserInfo.getAccess().equals("Admin")) {
-            //System.out.println(UserInfo.getToken().getAccess_token()); this way faster than debugging
-            model.addAttribute("user", UserInfo);
+             model.addAttribute("user", UserInfo);
             managementService.updateItemType(itemType,UserInfo.getToken());
             //apiService.userCreateMessage(UserInfo.getToken(),UserInfo.getUsername(),newTicketDTO.getMessageContext(),newTicketDTO.getId());
             return "redirect:/management/itemtype ";
@@ -349,12 +318,9 @@ public class AdminController {
     {
         UserToken UserInfo = (UserToken)request.getSession().getAttribute("userinfo");
         if(UserInfo != null && UserInfo.getAccess().equals("Admin")) {
-            //System.out.println(UserInfo.getToken().getAccess_token()); this way faster than debugging
-            model.addAttribute("user",UserInfo);
-            //List<Ticket> ticketList = apiService.userGetOwnTickets(UserInfo.getToken().getAccess_token(),UserInfo.getUsername());
-            model.addAttribute("publishers",managementService.getAllPublisher(UserInfo.getToken()));
-            // model.addAttribute("tickets",ticketList);
-            return "management/publisher/index";
+             model.addAttribute("user",UserInfo);
+             model.addAttribute("publishers",managementService.getAllPublisher(UserInfo.getToken()));
+             return "management/publisher/index";
         }
         return "redirect:/index";
 
@@ -365,12 +331,9 @@ public class AdminController {
     {
         UserToken UserInfo = (UserToken)request.getSession().getAttribute("userinfo");
         if(UserInfo != null && UserInfo.getAccess().equals("Admin")) {
-            //System.out.println(UserInfo.getToken().getAccess_token()); this way faster than debugging
-            model.addAttribute("user",UserInfo);
-            //List<Ticket> ticketList = apiService.userGetOwnTickets(UserInfo.getToken().getAccess_token(),UserInfo.getUsername());
-            model.addAttribute("newpublisher",new Publisher());
-            // model.addAttribute("tickets",ticketList);
-            return "management/publisher/add";
+             model.addAttribute("user",UserInfo);
+             model.addAttribute("newpublisher",new Publisher());
+             return "management/publisher/add";
         }
         return "redirect:/index";
 
@@ -380,8 +343,7 @@ public class AdminController {
     private String addPublisherPost(@ModelAttribute UserToken user, HttpServletRequest request, Model model , @ModelAttribute Publisher publisher) {
         UserToken UserInfo = (UserToken) request.getSession().getAttribute("userinfo");
         if (UserInfo != null && UserInfo.getAccess().equals("Admin")) {
-            //System.out.println(UserInfo.getToken().getAccess_token()); this way faster than debugging
-            model.addAttribute("user", UserInfo);
+             model.addAttribute("user", UserInfo);
             managementService.addPublisher(publisher,UserInfo.getToken());
             //apiService.userCreateMessage(UserInfo.getToken(),UserInfo.getUsername(),newTicketDTO.getMessageContext(),newTicketDTO.getId());
             return "redirect:/management/publisher ";
@@ -395,12 +357,10 @@ public class AdminController {
     {
         UserToken UserInfo = (UserToken)request.getSession().getAttribute("userinfo");
         if(UserInfo != null && UserInfo.getAccess().equals("Admin")) {
-            //System.out.println(UserInfo.getToken().getAccess_token()); this way faster than debugging
-            model.addAttribute("user",UserInfo);
+             model.addAttribute("user",UserInfo);
             //List<Ticket> ticketList = apiService.userGetOwnTickets(UserInfo.getToken().getAccess_token(),UserInfo.getUsername())
             model.addAttribute("publisher",managementService.showPublisher(id,UserInfo.getToken()));
-            // model.addAttribute("tickets",ticketList);
-            return "management/publisher/show";
+             return "management/publisher/show";
         }
         return "redirect:/index";
 
@@ -411,12 +371,9 @@ public class AdminController {
     {
         UserToken UserInfo = (UserToken)request.getSession().getAttribute("userinfo");
         if(UserInfo != null && UserInfo.getAccess().equals("Admin")) {
-            //System.out.println(UserInfo.getToken().getAccess_token()); this way faster than debugging
-            model.addAttribute("user",UserInfo);
-            //List<Ticket> ticketList = apiService.userGetOwnTickets(UserInfo.getToken().getAccess_token(),UserInfo.getUsername());
-            managementService.deletePublisher(id,UserInfo.getToken());
-            // model.addAttribute("tickets",ticketList);
-            return "redirect:/management/publisher";
+             model.addAttribute("user",UserInfo);
+             managementService.deletePublisher(id,UserInfo.getToken());
+             return "redirect:/management/publisher";
         }
         return "redirect:/index";
 
@@ -426,8 +383,7 @@ public class AdminController {
     private String editPublisher(@ModelAttribute UserToken user, HttpServletRequest request, Model model , @ModelAttribute Publisher publisher) {
         UserToken UserInfo = (UserToken) request.getSession().getAttribute("userinfo");
         if (UserInfo != null && UserInfo.getAccess().equals("Admin")) {
-            //System.out.println(UserInfo.getToken().getAccess_token()); this way faster than debugging
-            model.addAttribute("user", UserInfo);
+             model.addAttribute("user", UserInfo);
             managementService.updatePublisher(publisher,UserInfo.getToken());
             //apiService.userCreateMessage(UserInfo.getToken(),UserInfo.getUsername(),newTicketDTO.getMessageContext(),newTicketDTO.getId());
             return "redirect:/management/publisher ";
@@ -441,12 +397,9 @@ public class AdminController {
     {
         UserToken UserInfo = (UserToken)request.getSession().getAttribute("userinfo");
         if(UserInfo != null && UserInfo.getAccess().equals("Admin")) {
-            //System.out.println(UserInfo.getToken().getAccess_token()); this way faster than debugging
-            model.addAttribute("user",UserInfo);
-            //List<Ticket> ticketList = apiService.userGetOwnTickets(UserInfo.getToken().getAccess_token(),UserInfo.getUsername());
-            model.addAttribute("subjects",managementService.getAllSubjects(UserInfo.getToken()));
-            // model.addAttribute("tickets",ticketList);
-            return "management/subject/index";
+             model.addAttribute("user",UserInfo);
+             model.addAttribute("subjects",managementService.getAllSubjects(UserInfo.getToken()));
+             return "management/subject/index";
         }
         return "redirect:/index";
 
@@ -457,12 +410,9 @@ public class AdminController {
     {
         UserToken UserInfo = (UserToken)request.getSession().getAttribute("userinfo");
         if(UserInfo != null && UserInfo.getAccess().equals("Admin")) {
-            //System.out.println(UserInfo.getToken().getAccess_token()); this way faster than debugging
-            model.addAttribute("user",UserInfo);
-            //List<Ticket> ticketList = apiService.userGetOwnTickets(UserInfo.getToken().getAccess_token(),UserInfo.getUsername());
-            model.addAttribute("newsubject",new Subject());
-            // model.addAttribute("tickets",ticketList);
-            return "management/subject/add";
+             model.addAttribute("user",UserInfo);
+             model.addAttribute("newsubject",new Subject());
+             return "management/subject/add";
         }
         return "redirect:/index";
 
@@ -472,8 +422,7 @@ public class AdminController {
     private String addSubjectPost(@ModelAttribute UserToken user, HttpServletRequest request, Model model , @ModelAttribute Subject subject) {
         UserToken UserInfo = (UserToken) request.getSession().getAttribute("userinfo");
         if (UserInfo != null && UserInfo.getAccess().equals("Admin")) {
-            //System.out.println(UserInfo.getToken().getAccess_token()); this way faster than debugging
-            model.addAttribute("user", UserInfo);
+             model.addAttribute("user", UserInfo);
             managementService.addSubject(subject,UserInfo.getToken());
             //apiService.userCreateMessage(UserInfo.getToken(),UserInfo.getUsername(),newTicketDTO.getMessageContext(),newTicketDTO.getId());
             return "redirect:/management/subject ";
@@ -487,12 +436,9 @@ public class AdminController {
     {
         UserToken UserInfo = (UserToken)request.getSession().getAttribute("userinfo");
         if(UserInfo != null && UserInfo.getAccess().equals("Admin")) {
-            //System.out.println(UserInfo.getToken().getAccess_token()); this way faster than debugging
-            model.addAttribute("user",UserInfo);
-            //List<Ticket> ticketList = apiService.userGetOwnTickets(UserInfo.getToken().getAccess_token(),UserInfo.getUsername());
-            model.addAttribute("subject",managementService.showSubject(id,UserInfo.getToken()));
-            // model.addAttribute("tickets",ticketList);
-            return "management/subject/show";
+             model.addAttribute("user",UserInfo);
+             model.addAttribute("subject",managementService.showSubject(id,UserInfo.getToken()));
+             return "management/subject/show";
         }
         return "redirect:/index";
 
@@ -502,8 +448,7 @@ public class AdminController {
     private String deleteSubject(@ModelAttribute UserToken user, HttpServletRequest request, Model model , @ModelAttribute Subject subject,@PathVariable int id) {
         UserToken UserInfo = (UserToken) request.getSession().getAttribute("userinfo");
         if (UserInfo != null && UserInfo.getAccess().equals("Admin")) {
-            //System.out.println(UserInfo.getToken().getAccess_token()); this way faster than debugging
-            model.addAttribute("user", UserInfo);
+             model.addAttribute("user", UserInfo);
             managementService.deleteSubject(id,UserInfo.getToken());
             //apiService.userCreateMessage(UserInfo.getToken(),UserInfo.getUsername(),newTicketDTO.getMessageContext(),newTicketDTO.getId());
             return "redirect:/management/subject ";
@@ -516,8 +461,7 @@ public class AdminController {
     private String editSubject(@ModelAttribute UserToken user, HttpServletRequest request, Model model , @ModelAttribute Subject subject) {
         UserToken UserInfo = (UserToken) request.getSession().getAttribute("userinfo");
         if (UserInfo != null && UserInfo.getAccess().equals("Admin")) {
-            //System.out.println(UserInfo.getToken().getAccess_token()); this way faster than debugging
-            model.addAttribute("user", UserInfo);
+             model.addAttribute("user", UserInfo);
             managementService.updateSubject(subject,UserInfo.getToken());
             //apiService.userCreateMessage(UserInfo.getToken(),UserInfo.getUsername(),newTicketDTO.getMessageContext(),newTicketDTO.getId());
             return "redirect:/management/subject ";

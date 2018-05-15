@@ -49,7 +49,7 @@
 </div>
 </div>
 
-
+<!--SEARCH AUTHOR-->
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-12">
@@ -64,13 +64,13 @@
                     <br/>
                     <select required th:field="${search.searchType}">
                         <option value="1">
-                Anahtar Kelime
+                            Anahtar Kelime
                         </option>
                         <option value="2">
-Yazar Adı - Soyadı
+                            Yazar Adı - Soyadı
                         </option>
                         <option value="3">
-Yayıncı
+                            Yayıncı
                         </option>
                     </select>
                     <br/>
@@ -118,19 +118,19 @@ Yayın Adı
                             </tr>
                             </thead>
                             <tbody>
-                            <tr id="success" th:each="item: ${items}">
-                                <td th:text="${item.itemID}">
+                            <tr id="success" th:each="author: ${authors}">
+                                <td th:text="${author.authorID}">
                                     1
                                 </td>
-                                <td th:text="${item.itemName}">
+                                <td th:text="${author.authorName}">
                                     TB - Monthly
                                 </td>
-
+                                <td th:text="${author.authorLastName}">
+                                    TB - Monthly
+                                </td>
                                 <td>
-                                    <a th:href="@{'/management/item/show/'+${item.itemID}}"><button class="btn btn-primary" type="submit">Görüntüle</button></a>
-                                    <a th:href="@{'/management/item/delete/'+${item.itemID}}"><button class="btn btn-success" type="button">Ödünç Ver</button></a>
-                                    <a th:href="@{'/management/item/delete/'+${item.itemID}}"><button class="btn btn-danger" type="button">Sil</button></a>
 
+                                    <a th:href="@{'/management/search/author/'+${author.authorID}}"><button class="btn btn-primary" type="submit">Kitaplarını Listele</button></a>
                                 </td>
                             </tr>
                             </tbody>

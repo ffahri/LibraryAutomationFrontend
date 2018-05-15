@@ -53,9 +53,81 @@ public class AdminController {
         if(UserInfo != null && UserInfo.getAccess().equals("Admin")) {
             model.addAttribute("user",UserInfo);
             model.addAttribute("search",new Search());
-            model.addAttribute("items",managementService.searchItemKeyword(search.getKeyword(),UserInfo.getToken()));
+            if(search.getSearchType()==1) {
+                model.addAttribute("items", managementService.searchItemKeyword(search.getKeyword(), UserInfo.getToken()));
+                return "management/search";
+            }
+            else if (search.getSearchType() == 2) {
+                model.addAttribute("authors",managementService.searchByAuthor(search.getKeyword(),UserInfo.getToken()));
 
+                return "management/search-author";
+
+            }
+            else if(search.getSearchType() == 3) {
+                model.addAttribute("publishers",managementService.searchByPublisher(search.getKeyword(),UserInfo.getToken()));
+
+                return "management/search-publisher";
+            }
             return "management/search";
+        }
+        return "redirect:/index";
+
+    }
+    @RequestMapping("/management/search-author")
+    private String adminSearchbyAuthor(HttpServletRequest request, Model model,@ModelAttribute Search search)
+    {
+        UserToken UserInfo = (UserToken)request.getSession().getAttribute("userinfo");
+        if(UserInfo != null && UserInfo.getAccess().equals("Admin")) {
+            model.addAttribute("user",UserInfo);
+            model.addAttribute("search",new Search());
+            model.addAttribute("authors",managementService.searchByAuthor(search.getKeyword(),UserInfo.getToken()));
+            System.out.println(search.getKeyword());
+            return "management/search-author";
+        }
+        return "redirect:/index";
+
+    }
+
+    @RequestMapping("/management/search/author/{authorID}")
+    private String itemsByAuthor(HttpServletRequest request, Model model,@PathVariable int authorID)
+    {
+        UserToken UserInfo = (UserToken)request.getSession().getAttribute("userinfo");
+        if(UserInfo != null && UserInfo.getAccess().equals("Admin")) {
+            model.addAttribute("user",UserInfo);
+            model.addAttribute("search",new Search());
+            //model.addAttribute("authors",managementService.searchByAuthor(search.getKeyword(),UserInfo.getToken()));
+            //System.out.println(search.getKeyword());
+            model.addAttribute("items",managementService.searchItemsByAuthor(authorID,UserInfo.getToken()));
+            return "management/search";
+        }
+        return "redirect:/index";
+
+    }
+    @RequestMapping("/management/search/publisher/{publisherID}")
+    private String itemsByPublisher(HttpServletRequest request, Model model,@PathVariable int publisherID)
+    {
+        UserToken UserInfo = (UserToken)request.getSession().getAttribute("userinfo");
+        if(UserInfo != null && UserInfo.getAccess().equals("Admin")) {
+            model.addAttribute("user",UserInfo);
+            model.addAttribute("search",new Search());
+            //model.addAttribute("authors",managementService.searchByAuthor(search.getKeyword(),UserInfo.getToken()));
+            //System.out.println(search.getKeyword());
+            model.addAttribute("items",managementService.searchItemsByPublisher(publisherID,UserInfo.getToken()));
+            return "management/search";
+        }
+        return "redirect:/index";
+
+    }
+    @RequestMapping("/management/search-publisher")
+    private String adminSearchbyISBN(HttpServletRequest request, Model model,@ModelAttribute Search search)
+    {
+        UserToken UserInfo = (UserToken)request.getSession().getAttribute("userinfo");
+        if(UserInfo != null && UserInfo.getAccess().equals("Admin")) {
+            model.addAttribute("user",UserInfo);
+            model.addAttribute("search",new Search());
+            model.addAttribute("publishers",managementService.searchByPublisher(search.getKeyword(),UserInfo.getToken()));
+
+            return "management/search-publisher";
         }
         return "redirect:/index";
 

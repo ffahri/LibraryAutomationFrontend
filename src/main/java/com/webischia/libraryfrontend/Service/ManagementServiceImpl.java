@@ -418,4 +418,64 @@ public class ManagementServiceImpl implements ManagementService{
         HttpEntity<Search> request = new HttpEntity<>(search, headers);
         return restTemplate.postForObject(uriBuilder.toUriString(), request, Items[].class);
         }
+
+    @Override
+    public Author[] searchByAuthor(String keyword, String token) {
+        String url="http://localhost:8090/api/v1/management/author/search/"+keyword;
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder
+                .fromUriString(url);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer "+token);
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity entity = new HttpEntity(headers);
+
+        Author[] authors = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET,entity,Author[].class).getBody();
+        return authors;
+    }
+
+    @Override
+    public Publisher[] searchByPublisher(String keyword, String token) {
+        String url="http://localhost:8090/api/v1/management/publisher/search/"+keyword;
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder
+                .fromUriString(url);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer "+token);
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity entity = new HttpEntity(headers);
+
+        Publisher[] publishers = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET,entity,Publisher[].class).getBody();
+        return publishers;
+    }
+    @Override
+    public Items[]searchItemsByAuthor(int authorID,String token)
+    {
+
+        String url="http://localhost:8090/api/v1/management/item/get/search/author/"+authorID;
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder
+                .fromUriString(url);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer "+token);
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity entity = new HttpEntity(headers);
+
+        Items[] items = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET,entity,Items[].class).getBody();
+        return items;
+    }
+
+    @Override
+    public Items[] searchItemsByPublisher(int publisherID, String token) {
+        String url="http://localhost:8090/api/v1/management/item/get/search/publisher/"+publisherID;
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder
+                .fromUriString(url);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer "+token);
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity entity = new HttpEntity(headers);
+
+        Items[] items = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET,entity,Items[].class).getBody();
+        return items;    }
 }

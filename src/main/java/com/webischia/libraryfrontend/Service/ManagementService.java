@@ -39,6 +39,13 @@ public interface ManagementService {
     Items[]searchItemKeyword(String keyword,String token);
 
     Items[] searchbyPost(Search search,String token);
+    Author[] searchByAuthor(String keyword,String token);
+
+    Publisher[] searchByPublisher(String keyword,String token);
+    Items[]searchItemsByAuthor(int authorID,String token);
+    Items[]searchItemsByPublisher(int publisherID,String token);
+
+
 
 
 }

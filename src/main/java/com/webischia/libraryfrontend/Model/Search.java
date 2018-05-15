@@ -12,4 +12,7 @@ public class Search {
     String keyword;
     String publisherName;
     String authorName;
+    int searchType;
+    int authorID;
+    int publisherID;
 }

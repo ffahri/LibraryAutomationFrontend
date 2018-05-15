@@ -56,32 +56,23 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title">
-                ARAMA PANELİ                    </h3>
+                Gelişmiş Arama                  </h3>
                 </div>
                 <form th:object="${search}" th:action="@{/management/search/}" method="post">
 
                 <div class="panel-body">
-                    <br/>
-                    <select required th:field="${search.searchType}">
-                        <option value="1">
-                Anahtar Kelime
-                        </option>
-                        <option value="2">
-Yazar Adı - Soyadı
-                        </option>
-                        <option value="3">
-Yayıncı
-                        </option>
-                    </select>
-                    <br/>
-                    <label class="control-label"></label>
+
+                    <label class="control-label">Yazar Adı</label>
+                    <input class="form-control" type="text" th:field="${search.authorName}"/>
+                    <label class="control-label">Yayıncı</label>
+                    <input class="form-control" type="text" th:field="${search.publisherName}"/>
+                    <!--<label class="control-label">Konu Adı (Opsiyonel)</label>-->
+                    <!--<input class="form-control" type="text" th:field="${search.subjectName}"/>-->
+                    <label class="control-label">Anahtar Kelime</label>
                     <input class="form-control" type="text" th:field="${search.keyword}" required/>
                 </div>
                 <div class="panel-footer">
                     <button class="btn btn-primary" name="action" type="submit" >Ara</button>
-                    <a href="search-advanced.html">
-                        <button class="btn btn-success" name="action" type="ref" >Gelişmiş Arama</button>
-                    </a>
                 </div>
                 </form>
             </div>
@@ -128,12 +119,12 @@ Yayın Adı
 
                                 <td>
                                     <a th:href="@{'/management/item/show/'+${item.itemID}}"><button class="btn btn-primary" type="submit">Görüntüle</button></a>
-                                    <a th:href="@{'/management/item/delete/'+${item.itemID}}"><button class="btn btn-success" type="button">Ödünç Ver</button></a>
                                     <a th:href="@{'/management/item/delete/'+${item.itemID}}"><button class="btn btn-danger" type="button">Sil</button></a>
 
                                 </td>
                             </tr>
                             </tbody>
+
                         </table>
                         </div>
                     </div>

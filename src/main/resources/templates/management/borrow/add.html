@@ -11,7 +11,7 @@
             integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
             crossorigin="anonymous" th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
     <meta charset="UTF-8"/>
-    <title>Kütüphane Otomasyonu - Yönetim</title>
+    <title>Kütüphane Otomasyonu - ÖDÜNÇ VER</title>
 </head>
 <body>
 
@@ -23,7 +23,7 @@
 
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                     <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
-                </button> <a class="navbar-brand" href="/management">Kütüphane Otomasyonu - Yayıncı Göster</a>
+                </button> <a class="navbar-brand" href="/management/author">Kütüphane Otomasyonu - ÖDÜNÇ VER</a>
             </div>
 
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -44,19 +44,34 @@
 </div>
 <div class="col-md-12">
 
-<div align="center">
-    <a href="/management/borrow/odunc"><button class="btn btn-success" type="button">Ödünç ver</button></a>
-    <a href="/management/borrow/iade"><button class="btn btn-success" type="button">İade al</button></a>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">
 
-    <a href="/management/search"><button class="btn btn-primary" type="button">Arama Yap</button></a>
-    <a href="/management/itemtype"><button class="btn btn-primary" type="button">Türler</button></a>
-    <a href="/management/subject"><button class="btn btn-primary" type="button">Konular</button></a>
-    <a href="/management/author"><button class="btn btn-primary" type="button">Yazarlar</button></a>
-    <a href="/management/publisher"><button class="btn btn-primary" type="button">Yayıncılar</button></a>
-    <a href="/management/item"><button class="btn btn-primary" type="button">Yayınlar</button></a>
+        </h3>
+    </div>
+    <form th:object="${usrbrw}" th:action="@{/management/borrow/odunc/new}" method="post">
+    <div class="panel-body">
+
+        <label class="control-label">Kullanıcı Mail</label>
+        <input class="form-control" type="text" th:field="${usrbrw.mail}"required/>
+
+        <label class="control-label">LOKASYON KONUM</label>
+        <input class="form-control" type="text" th:field="${usrbrw.lokasyon1}" required/>
+
+        <label class="control-label">LOKASYON SIRA</label>
+        <input class="form-control" type="text" th:field="${usrbrw.lokasyon2}" required/>
 
 
-    <br/>
+
+
+    </div>
+    <div class="panel-footer">
+        <button class="btn btn-success" name="action" type="submit" value="add">Ekle</button>
+
+
+    </div>
+        </form>
 </div>
 </div>
 </body>

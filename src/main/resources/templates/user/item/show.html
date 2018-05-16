@@ -62,27 +62,21 @@
                 </select>
 
                 <label class="control-label">Yayın Evi
-                    <a href="/management/publishler/add">
-                        (Eklemek için tıklayın)
-                    </a></label>
+                    </label>
                 <br/>
                 <!--COMBOBOX value -> item.typeID-->
                 <select class="form-control" th:field="${newitem.publisherID}">
                     <option  th:each="publisher: ${publishers}" th:value="${publisher.publisherID}" th:text="${publisher.publisherName}">ŞEHİRLER</option>
                 </select>
                 <label class="control-label">Yazarlar
-                    <a href="/management/author/add">
-                        (Eklemek için tıklayın)
-                    </a></label>
+                   </label>
                 <br/>
                 <!--COMBOBOX value -> item.typeID-->
                 <select class="form-control" th:field="${itemdto.authorIDs}" multiple>
                     <option  th:each="author: ${authors}" th:value="${author.authorID}" th:text="${author.authorName +' '+ author.authorLastName}">Yazarlar</option>
                 </select>
                 <label class="control-label">Konular
-                    <a href="/management/subject/add">
-                        (Eklemek için tıklayın)
-                    </a></label>
+                    </label>
                 <br/>
                 <!--COMBOBOX value -> item.typeID-->
                 <select class="form-control" th:field="${itemdto.subjectIDs}" multiple>
@@ -217,10 +211,6 @@
 
             </div>
             <div class="panel-footer">
-                <button class="btn btn-success" name="action" type="submit" value="add">Ekle</button>
-                <a href="/management/item">
-                    <button class="btn btn-danger" name="action" type="button" value="cancel">İptal</button>
-                </a>
 
             </div>
             <div class="panel-heading">
@@ -261,8 +251,6 @@
                     </td>
                         <td > ALINABİLİR</td>
                         <td>
-                            <a th:href="@{'/management/publisher/show/'+${stock.stockID}}"><button class="btn btn-primary" type="submit">Görüntüle</button></a>
-                            <a th:href="@{'/management/publisher/delete/'+${stock.stockID}}"><button class="btn btn-danger" type="button">Sil</button></a>
 
                         </td>
                     </tr>

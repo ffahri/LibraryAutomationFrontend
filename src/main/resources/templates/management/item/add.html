@@ -61,13 +61,33 @@
                     <option  th:each="type: ${types}" th:value="${type.typeID}" th:text="${type.typeName}">ŞEHİRLER</option>
                 </select>
 
-                <label class="control-label">Yayın Evi (Listede yoksa anasayfadan ekleyin)</label>
+                <label class="control-label">Yayın Evi
+                    <a href="/management/publishler/add">
+                        (Eklemek için tıklayın)
+                    </a></label>
                 <br/>
                 <!--COMBOBOX value -> item.typeID-->
                 <select class="form-control" th:field="${newitem.publisherID}">
                     <option  th:each="publisher: ${publishers}" th:value="${publisher.publisherID}" th:text="${publisher.publisherName}">ŞEHİRLER</option>
                 </select>
-
+                <label class="control-label">Yazarlar
+                    <a href="/management/author/add">
+                        (Eklemek için tıklayın)
+                    </a></label>
+                <br/>
+                <!--COMBOBOX value -> item.typeID-->
+                <select class="form-control" th:field="${itemdto.authorIDs}" multiple>
+                    <option  th:each="author: ${authors}" th:value="${author.authorID}" th:text="${author.authorName +' '+ author.authorLastName}">Yazarlar</option>
+                </select>
+                <label class="control-label">Konular
+                    <a href="/management/subject/add">
+                        (Eklemek için tıklayın)
+                    </a></label>
+                <br/>
+                <!--COMBOBOX value -> item.typeID-->
+                <select class="form-control" th:field="${itemdto.subjectIDs}" multiple>
+                    <option  th:each="subject: ${subjects}" th:value="${subject.subjectID}" th:text="${subject.subjectName}">Yazarlar</option>
+                </select>
                 <label class="control-label">Yayın Adı</label>
                 <input class="form-control" type="text" th:field="${newitem.itemName}" required/>
 

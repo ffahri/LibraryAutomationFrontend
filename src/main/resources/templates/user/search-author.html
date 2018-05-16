@@ -58,7 +58,7 @@
                     <h3 class="panel-title">
                 ARAMA PANELİ                    </h3>
                 </div>
-                <form th:object="${search}" th:action="@{/management/search/}" method="post">
+                <form th:object="${search}" th:action="@{/user/search/}" method="post">
 
                 <div class="panel-body">
                     <br/>
@@ -130,7 +130,7 @@ Yayın Adı
                                 </td>
                                 <td>
 
-                                    <a th:href="@{'/management/search/author/'+${author.authorID}}"><button class="btn btn-primary" type="submit">Kitaplarını Listele</button></a>
+                                    <a th:href="@{'/user/search/author/'+${author.authorID}}"><button class="btn btn-primary" type="submit">Kitaplarını Listele</button></a>
                                 </td>
                             </tr>
                             </tbody>

@@ -1,6 +1,7 @@
 package com.webischia.libraryfrontend.Controller;
 
 import com.webischia.libraryfrontend.Model.*;
+
 import com.webischia.libraryfrontend.Service.ManagementService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,6 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class AdminController {
@@ -249,32 +253,55 @@ public class AdminController {
              model.addAttribute("types",managementService.getAllTypes(UserInfo.getToken()));
              model.addAttribute("publishers",managementService.getAllPublisher(UserInfo.getToken()));
              model.addAttribute("newitem",new Items());
+             model.addAttribute("authors",managementService.getAllAuthors(UserInfo.getToken()));
+             model.addAttribute("subjects",managementService.getAllSubjects(UserInfo.getToken()));
+             model.addAttribute("itemdto",new ItemDTO());
              return "management/item/add";
         }
         return "redirect:/index";
     }
     @RequestMapping(value="/management/item/add/new", method= RequestMethod.POST, params="action=add")
-    private String addItemPost(@ModelAttribute UserToken user, HttpServletRequest request, Model model , @ModelAttribute Items item) {
+    private String addItemPost(@ModelAttribute UserToken user, HttpServletRequest request, Model model , @ModelAttribute Items item,@ModelAttribute ItemDTO itemDTO){
         UserToken UserInfo = (UserToken) request.getSession().getAttribute("userinfo");
         if (UserInfo != null && UserInfo.getAccess().equals("Admin")) {
              model.addAttribute("user", UserInfo);
              item.setStockNo(item.getISBN());
-             System.out.println(UserInfo.getToken()+"F");
-            managementService.addItem(item,UserInfo.getToken());
+            // System.out.println(listauthor.getAuthList().length);
+            managementService.addItem(item,itemDTO,UserInfo.getToken());
             //apiService.userCreateMessage(UserInfo.getToken(),UserInfo.getUsername(),newTicketDTO.getMessageContext(),newTicketDTO.getId());
             return "redirect:/management/item ";
 
         }
         return "redirect:/index";
     }
+    @RequestMapping(value="/management/item/edit", method= RequestMethod.POST, params="action=add")
+    private String editItem(@ModelAttribute UserToken user, HttpServletRequest request, Model model , @ModelAttribute Items item,@ModelAttribute ItemDTO itemDTO){
+        UserToken UserInfo = (UserToken) request.getSession().getAttribute("userinfo");
+        if (UserInfo != null && UserInfo.getAccess().equals("Admin")) {
+            model.addAttribute("user", UserInfo);
+            item.setStockNo(item.getISBN());
+            // System.out.println(listauthor.getAuthList().length);
+            managementService.updateItem(item,itemDTO,UserInfo.getToken());
+            //apiService.userCreateMessage(UserInfo.getToken(),UserInfo.getUsername(),newTicketDTO.getMessageContext(),newTicketDTO.getId());
+            return "redirect:/management/item ";
 
-    @RequestMapping("/management/item/show")
-    private String itemShow(HttpServletRequest request, Model model)
+        }
+        return "redirect:/index";
+    }
+    @RequestMapping("/management/item/show/{id}")
+    private String itemShow(HttpServletRequest request, Model model,@PathVariable int id)
     {
         UserToken UserInfo = (UserToken)request.getSession().getAttribute("userinfo");
         if(UserInfo != null && UserInfo.getAccess().equals("Admin")) {
              model.addAttribute("user",UserInfo);
- 
+             model.addAttribute("newitem",managementService.showItem(id,UserInfo.getToken()));
+            model.addAttribute("types",managementService.getAllTypes(UserInfo.getToken()));
+            model.addAttribute("publishers",managementService.getAllPublisher(UserInfo.getToken()));
+            model.addAttribute("authors",managementService.getAllAuthors(UserInfo.getToken()));
+            model.addAttribute("subjects",managementService.getAllSubjects(UserInfo.getToken()));
+            model.addAttribute("itemdto",managementService.showItemDTO(id,UserInfo.getToken()));
+            model.addAttribute("stocks",managementService.showAllItemStock(id,UserInfo.getToken()));
+            model.addAttribute("borrow.status",new String("Availabile"));
              return "management/item/show";
         }
         return "redirect:/index";
@@ -294,18 +321,7 @@ public class AdminController {
 
     }
 
-    @RequestMapping(value="/management/item/edit/", method= RequestMethod.POST, params="action=edit")
-    private String editItem(@ModelAttribute UserToken user, HttpServletRequest request, Model model , @ModelAttribute Items items) {
-        UserToken UserInfo = (UserToken) request.getSession().getAttribute("userinfo");
-        if (UserInfo != null && UserInfo.getAccess().equals("Admin")) {
-             model.addAttribute("user", UserInfo);
-            managementService.updateItem(items,UserInfo.getToken());
-            //apiService.userCreateMessage(UserInfo.getToken(),UserInfo.getUsername(),newTicketDTO.getMessageContext(),newTicketDTO.getId());
-            return "redirect:/management/item ";
 
-        }
-        return "redirect:/index";
-    }
 
     @RequestMapping("/management/itemtype")
     private String itemTypeDash(HttpServletRequest request, Model model)
@@ -541,5 +557,120 @@ public class AdminController {
         }
         return "redirect:/index";
     }
+    @RequestMapping("/management/item/add/stock/{itemID}")
+    private String stockAdd(HttpServletRequest request, Model model,@PathVariable int itemID)
+    {
+        UserToken UserInfo = (UserToken)request.getSession().getAttribute("userinfo");
+        if(UserInfo != null && UserInfo.getAccess().equals("Admin")) {
+            model.addAttribute("user",UserInfo);
+            model.addAttribute("item",managementService.showItem(itemID,UserInfo.getToken()));
+            Stock tmp = new Stock();
+            tmp.setItemID(itemID);
+            model.addAttribute("newstock",tmp);
+            return "management/item/stockAdd";
+        }
+        return "redirect:/index";
+    }
+    @RequestMapping(value="/management/item/add/stock/new/", method= RequestMethod.POST, params="action=add")
+    private String addStockPost(@ModelAttribute UserToken user, HttpServletRequest request, Model model , @ModelAttribute Stock stock){
+        UserToken UserInfo = (UserToken) request.getSession().getAttribute("userinfo");
+        if (UserInfo != null && UserInfo.getAccess().equals("Admin")) {
+            model.addAttribute("user", UserInfo);
+            managementService.addStock(stock,UserInfo.getToken());
+            //apiService.userCreateMessage(UserInfo.getToken(),UserInfo.getUsername(),newTicketDTO.getMessageContext(),newTicketDTO.getId());
+            return "redirect:/management/item/show/"+stock.getItemID();
 
+        }
+        return "redirect:/index";
+    }
+    @RequestMapping("/management/item/showstock/{stockID}")
+    private String showStock(HttpServletRequest request, Model model,@PathVariable int stockID)
+    {
+        UserToken UserInfo = (UserToken)request.getSession().getAttribute("userinfo");
+        if(UserInfo != null && UserInfo.getAccess().equals("Admin")) {
+            model.addAttribute("user",UserInfo);
+            Stock tmp = managementService.showStock(stockID,UserInfo.getToken());
+            model.addAttribute("item",managementService.showItem(tmp.getItemID(),UserInfo.getToken()));
+            model.addAttribute("stock",tmp);
+            return "management/item/showStock";
+        }
+        return "redirect:/index";
+    }
+    @RequestMapping(value="/management/item/add/stock/edit", method= RequestMethod.POST)
+    private String editStockPost(@ModelAttribute UserToken user, HttpServletRequest request, Model model , @ModelAttribute Stock stock){
+        UserToken UserInfo = (UserToken) request.getSession().getAttribute("userinfo");
+        if (UserInfo != null && UserInfo.getAccess().equals("Admin")) {
+            model.addAttribute("user", UserInfo);
+            managementService.editStock(stock,UserInfo.getToken());
+            //apiService.userCreateMessage(UserInfo.getToken(),UserInfo.getUsername(),newTicketDTO.getMessageContext(),newTicketDTO.getId());
+            return "redirect:/management/item/stockEdit ";
+
+        }
+        return "redirect:/index";
+    }
+    @RequestMapping(value="/management/item/stock/delete/{id}")
+    private String deleteStock(@ModelAttribute UserToken user, HttpServletRequest request, Model model ,@PathVariable int id) {
+        UserToken UserInfo = (UserToken) request.getSession().getAttribute("userinfo");
+        if (UserInfo != null && UserInfo.getAccess().equals("Admin")) {
+            model.addAttribute("user", UserInfo);
+            managementService.deleteStock(id,UserInfo.getToken());
+            //apiService.userCreateMessage(UserInfo.getToken(),UserInfo.getUsername(),newTicketDTO.getMessageContext(),newTicketDTO.getId());
+            return "redirect:/management/item ";
+
+        }
+        return "redirect:/index";
+    }
+
+
+    @RequestMapping("/management/borrow/odunc")
+    private String oduncVer(HttpServletRequest request, Model model )
+    {
+        UserToken UserInfo = (UserToken)request.getSession().getAttribute("userinfo");
+        if(UserInfo != null && UserInfo.getAccess().equals("Admin")) {
+            model.addAttribute("user",UserInfo);
+            model.addAttribute("usrbrw",new Borrows());
+            return "management/borrow/add";
+        }
+        return "redirect:/index";
+
+    }
+    @RequestMapping(value="/management/borrow/odunc/new", method= RequestMethod.POST, params="action=add")
+    private String doOdunc(@ModelAttribute UserToken user, HttpServletRequest request, Model model , @ModelAttribute Borrows borrowDTO){
+        UserToken UserInfo = (UserToken) request.getSession().getAttribute("userinfo");
+        if (UserInfo != null && UserInfo.getAccess().equals("Admin")) {
+            model.addAttribute("user", UserInfo);
+
+            managementService.oduncAl(borrowDTO,UserInfo.getToken());
+            //apiService.userCreateMessage(UserInfo.getToken(),UserInfo.getUsername(),newTicketDTO.getMessageContext(),newTicketDTO.getId());
+            return "redirect:/management/ ";
+
+        }
+        return "redirect:/index";
+    }
+
+    @RequestMapping("/management/borrow/iade")
+    private String iadeAl(HttpServletRequest request, Model model )
+    {
+        UserToken UserInfo = (UserToken)request.getSession().getAttribute("userinfo");
+        if(UserInfo != null && UserInfo.getAccess().equals("Admin")) {
+            model.addAttribute("user",UserInfo);
+            model.addAttribute("usrbrw",new Borrows());
+            return "management/borrow/iadeAl";
+        }
+        return "redirect:/index";
+
+    }
+    @RequestMapping(value="/management/borrow/iade/new", method= RequestMethod.POST, params="action=add")
+    private String doIade(@ModelAttribute UserToken user, HttpServletRequest request, Model model , @ModelAttribute Borrows borrowDTO){
+        UserToken UserInfo = (UserToken) request.getSession().getAttribute("userinfo");
+        if (UserInfo != null && UserInfo.getAccess().equals("Admin")) {
+            model.addAttribute("user", UserInfo);
+            borrowDTO.setMail(UserInfo.getUsername() );
+            managementService.iadeAl(borrowDTO,UserInfo.getToken());
+            //apiService.userCreateMessage(UserInfo.getToken(),UserInfo.getUsername(),newTicketDTO.getMessageContext(),newTicketDTO.getId());
+            return "redirect:/management/ ";
+
+        }
+        return "redirect:/index";
+    }
 }

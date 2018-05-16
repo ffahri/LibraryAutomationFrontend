@@ -86,6 +86,7 @@
             </td>
             <td>
                 <a th:href="@{'/management/item/show/'+${item.itemID}}"><button class="btn btn-primary" type="submit">Görüntüle</button></a>
+                <a th:href="@{'/management/item/add/stock/'+${item.itemID}}"><button class="btn btn-success" type="button">Stok Ekle</button></a>
                 <a th:href="@{'/management/item/delete/'+${item.itemID}}"><button class="btn btn-danger" type="button">Sil</button></a>
 
             </td>

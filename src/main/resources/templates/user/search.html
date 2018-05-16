@@ -58,7 +58,7 @@
                     <h3 class="panel-title">
                 ARAMA PANELİ                    </h3>
                 </div>
-                <form th:object="${search}" th:action="@{/management/search/}" method="post">
+                <form th:object="${search}" th:action="@{/user/search/}" method="post">
 
                 <div class="panel-body">
                     <br/>
@@ -127,9 +127,7 @@ Yayın Adı
                                 </td>
 
                                 <td>
-                                    <a th:href="@{'/management/item/show/'+${item.itemID}}"><button class="btn btn-primary" type="submit">Görüntüle</button></a>
-                                    <a th:href="@{'/management/item/delete/'+${item.itemID}}"><button class="btn btn-success" type="button">Ödünç Ver</button></a>
-                                    <a th:href="@{'/management/item/delete/'+${item.itemID}}"><button class="btn btn-danger" type="button">Sil</button></a>
+                                    <a th:href="@{'/user/item/show/'+${item.itemID}}"><button class="btn btn-primary" type="submit">Görüntüle</button></a>
 
                                 </td>
                             </tr>

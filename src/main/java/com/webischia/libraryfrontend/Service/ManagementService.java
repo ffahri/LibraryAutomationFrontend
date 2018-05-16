@@ -24,11 +24,12 @@ public interface ManagementService {
     ItemType showItemType(int id,String token);
     ItemType[] getAllTypes(String token);
 
-    void addItem(Items items,String token);
+    void addItem(Items items,ItemDTO itemDTO,String token);
     void deleteItem(int id,String token);
-    void updateItem(Items items,String token);
+    void updateItem(Items items,ItemDTO itemDTO,String token);
     Items showItem(int id,String token);
     Items[] getAllItems(String token);
+    ItemDTO showItemDTO(int id,String token);
 
     void addPublisher(Publisher publisher,String token);
     void deletePublisher(int id,String token);
@@ -45,6 +46,19 @@ public interface ManagementService {
     Items[]searchItemsByAuthor(int authorID,String token);
     Items[]searchItemsByPublisher(int publisherID,String token);
 
+    void addStock(Stock stock, String token);
+    void editStock(Stock stock,String token);
+    Stock showStock(int id,String token);
+    void deleteStock(int id,String token);
+    Stock[] showAllItemStock(int itemID,String token);
+
+
+    public int mailToID(String mail,String token);
+
+    Borrows[] getUsersActive(String id,String token);
+    void oduncAl(Borrows borrowDTO ,String token); //yayın idsi
+    void iadeAl(Borrows borrowDTO ,String token);
+    void uzat(int stockID ,String token);
 
 
 

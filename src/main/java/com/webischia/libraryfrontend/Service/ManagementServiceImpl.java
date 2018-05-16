@@ -10,7 +10,6 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Service
@@ -205,7 +204,7 @@ public class ManagementServiceImpl implements ManagementService{
     }
 
     @Override
-    public void addItem(Items items, String token) {
+    public void addItem(Items items,ItemDTO itemDTO, String token) {
         String url="http://localhost:8090/api/v1/management/item/add";
         System.out.println(url) ;
         UriComponentsBuilder uriBuilder = UriComponentsBuilder
@@ -216,7 +215,9 @@ public class ManagementServiceImpl implements ManagementService{
         headers.setContentType(MediaType.APPLICATION_JSON);
         //Map<Items> postMap = new HashMap<>(items);
         //HttpEntity<Items> request = new HttpEntity<Items>(items);
-        HttpEntity<Items> request = new HttpEntity<Items>(items, headers);
+        System.out.println(items.getTypeID());
+        itemDTO.setItem(items);
+        HttpEntity<ItemDTO> request = new HttpEntity<ItemDTO>(itemDTO, headers);
         restTemplate.postForObject(uriBuilder.toUriString(), request, Items.class);
 
     }
@@ -371,8 +372,22 @@ public class ManagementServiceImpl implements ManagementService{
     }
 
     @Override
-    public void updateItem(Items items, String token) {
+    public void updateItem(Items items, ItemDTO itemDTO,String token) {
 
+        String url="http://localhost:8090/api/v1/management/item/edit/"+items.getItemID();
+        System.out.println(url) ;
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder
+                .fromUriString(url);
+        HttpHeaders headers = new HttpHeaders();
+        System.out.println("TOKEN \n"+token);
+        headers.set("Authorization", "Bearer "+token);
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        //Map<Items> postMap = new HashMap<>(items);
+        //HttpEntity<Items> request = new HttpEntity<Items>(items);
+        System.out.println(items.getTypeID());
+        itemDTO.setItem(items);
+        HttpEntity<ItemDTO> request = new HttpEntity<ItemDTO>(itemDTO, headers);
+        restTemplate.postForObject(uriBuilder.toUriString(), request, Items.class);
     }
 
     @Override
@@ -478,4 +493,151 @@ public class ManagementServiceImpl implements ManagementService{
 
         Items[] items = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET,entity,Items[].class).getBody();
         return items;    }
+
+    @Override
+    public void addStock(Stock stock, String token) {
+        String url="http://localhost:8090/api/v1/management/item/stock/add";
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder
+                .fromUriString(url);
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer "+token);
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Stock> request = new HttpEntity<Stock>(stock, headers);
+        restTemplate.postForObject(uriBuilder.toUriString(), request, Stock.class);
+    }
+
+    @Override
+    public void editStock(Stock stock, String token) {
+        String url="http://localhost:8090/api/v1/management/item/stock/edit";
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder
+                .fromUriString(url);
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer "+token);
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Stock> request = new HttpEntity<Stock>(stock, headers);
+        restTemplate.postForObject(uriBuilder.toUriString(), request, Stock.class);
+    }
+
+    @Override
+    public Stock showStock(int id, String token) {
+        String url="http://localhost:8090/api/v1/management/item/stock/get/"+id;
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder
+                .fromUriString(url);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer "+token);
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity entity = new HttpEntity(headers);
+
+        return restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET,entity,Stock.class).getBody();    }
+
+    @Override
+    public void deleteStock(int id, String token) {
+        String url="http://localhost:8090/api/v1/management/item/stock/delete/"+id;
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder
+                .fromUriString(url);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer "+token);
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity entity = new HttpEntity(headers);
+
+        //return restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET,entity,Stock.class).getBody();
+    }
+
+    @Override
+    public Stock[] showAllItemStock(int itemID, String token) {
+        String url="http://localhost:8090/api/v1/management/item/stock/item/"+itemID;
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder
+                .fromUriString(url);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer "+token);
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity entity = new HttpEntity(headers);
+
+        Stock[] stocks = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET,entity,Stock[].class).getBody();
+        return stocks;    }
+
+    @Override
+    public ItemDTO showItemDTO(int id, String token) {
+        String url="http://localhost:8090/api/v1/management/item/itemdto/get/"+id;
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder
+                .fromUriString(url);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer "+token);
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity entity = new HttpEntity(headers);
+
+        return restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET,entity,ItemDTO.class).getBody();      }
+
+        @Override
+        public int mailToID(String mail,String token)
+        {
+            String url="http://localhost:8090/api/v1/management/mailtoid";
+            UriComponentsBuilder uriBuilder = UriComponentsBuilder
+                    .fromUriString(url);
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("Authorization", "Bearer "+token);
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            Borrows tmp = new Borrows();
+            tmp.setMail(mail);
+            System.out.println(mail);
+            HttpEntity<Borrows> request = new HttpEntity<Borrows>(tmp, headers);
+            return restTemplate.postForObject(uriBuilder.toUriString(), request, Borrows.class).getUserID();
+        }
+
+    public Borrows[] getUsersActive(String mail, String token) {
+        int id = mailToID(mail,token);
+        String url="http://localhost:8090/api/v1/management/borrows/"+id;
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder
+                .fromUriString(url);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer "+token);
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity entity = new HttpEntity(headers);
+
+        Borrows[] stocks = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET,entity,Borrows[].class).getBody();
+        return stocks;
+    }
+
+    @Override
+    public void oduncAl(Borrows borrowDTO, String token) {
+
+        String url="http://localhost:8090/api/v1/management/borrows/odunc";
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder
+                .fromUriString(url);
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer "+token);
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Borrows> request = new HttpEntity<Borrows>(borrowDTO, headers);
+        restTemplate.postForObject(uriBuilder.toUriString(), request, Borrows[].class);
+    }
+
+    @Override
+    public void iadeAl(Borrows borrowDTO, String token) {
+        String url="http://localhost:8090/api/v1/management/borrows/iade";
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder
+                .fromUriString(url);
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer "+token);
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Borrows> request = new HttpEntity<Borrows>(borrowDTO, headers);
+        restTemplate.postForObject(uriBuilder.toUriString(), request, Borrows.class);
+    }
+
+    @Override
+    public void uzat(int stockID, String token) {
+        String url="http://localhost:8090/api/v1/management/borrows/uzat/"+stockID;
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder
+                .fromUriString(url);
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer "+token);
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity entity = new HttpEntity(headers);
+
+        restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET,entity,String.class);
+    }
 }

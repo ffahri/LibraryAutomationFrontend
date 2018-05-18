@@ -6,6 +6,7 @@ import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +14,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
@@ -42,6 +44,7 @@ public class LoginController {
         return "index";
     }
 
+
     @RequestMapping({"/register","/register/"})
     private String register(Model model)
     {
@@ -67,6 +70,7 @@ public class LoginController {
         UserAdressDTO dto = new UserAdressDTO();
         dto.setAddress(address);
         dto.setUser(user);
+
         userService.register(dto);
         return "redirect:/index";
 

@@ -30,7 +30,7 @@
 
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="/user/profile">Merhaba , <label th:text="${user.username}">User</label></a>
+                        <a href="/user/">Merhaba , <label th:text="${user.username}">User</label></a>
 
                     </li>
                     <li>
@@ -68,8 +68,11 @@
                                 <th>
                                     Ödünç Tarihi
                                 </th>
+                                <th>
+                                    Teslim Tarihi
+                                </th>
                             <th>
-                                    Süre
+                                    Süre(gün)
                             </th>
                                 <th>
                                     Lokasyon
@@ -86,6 +89,9 @@
                                     TB - Monthly
                                 </td>
                                 <td th:text="${borrow.borrowDate}">
+                                    TB - Monthly
+                                </td>
+                                <td th:text="${borrow.returnDate}">
                                     TB - Monthly
                                 </td>
                                 <td th:text="${borrow.borrowLength}">

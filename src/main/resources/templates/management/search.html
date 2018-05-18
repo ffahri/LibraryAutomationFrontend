@@ -79,9 +79,7 @@ Yayıncı
                 </div>
                 <div class="panel-footer">
                     <button class="btn btn-primary" name="action" type="submit" >Ara</button>
-                    <a href="search-advanced.html">
-                        <button class="btn btn-success" name="action" type="ref" >Gelişmiş Arama</button>
-                    </a>
+
                 </div>
                 </form>
             </div>
@@ -128,7 +126,7 @@ Yayın Adı
 
                                 <td>
                                     <a th:href="@{'/management/item/show/'+${item.itemID}}"><button class="btn btn-primary" type="submit">Görüntüle</button></a>
-                                    <a th:href="@{'/management/item/delete/'+${item.itemID}}"><button class="btn btn-success" type="button">Ödünç Ver</button></a>
+
                                     <a th:href="@{'/management/item/delete/'+${item.itemID}}"><button class="btn btn-danger" type="button">Sil</button></a>
 
                                 </td>

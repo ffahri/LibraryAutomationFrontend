@@ -1,5 +1,6 @@
 package com.webischia.libraryfrontend.Controller;
 
+import com.webischia.libraryfrontend.Model.Borrows;
 import com.webischia.libraryfrontend.Model.Search;
 import com.webischia.libraryfrontend.Model.Stock;
 import com.webischia.libraryfrontend.Model.UserToken;
@@ -12,6 +13,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.util.Calendar;
 
 @Controller
 public class UserController {
@@ -33,7 +37,19 @@ public class UserController {
             model.addAttribute("user",UserInfo);
             //List<Ticket> ticketList = apiService.userGetOwnTickets(UserInfo.getToken().getAccess_token(),UserInfo.getUsername());
 
-            model.addAttribute("borrows",managementService.getUsersActive(UserInfo.getUsername(),UserInfo.getToken()));
+            Borrows[] brw = managementService.getUsersActive(UserInfo.getUsername(),UserInfo.getToken());
+            Timestamp[] rtn = new Timestamp[brw.length];
+            for(int i = 0; i<brw.length;i++)
+            {
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(brw[i].getBorrowDate());
+                cal.add(Calendar.DAY_OF_WEEK, 15);
+                //ts.setTime(cal.getTime().getTime()); // or
+                brw[i].setReturnDate(new Timestamp(cal.getTime().getTime()));
+
+            }
+            model.addAttribute("borrows",brw);//managementService.getUsersActive(UserInfo.getUsername(),UserInfo.getToken()));
+
            // model.addAttribute("tickets",ticketList);
             return "user/index";
         }
